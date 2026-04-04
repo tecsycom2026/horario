@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Horario Rotativo</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--surface:#1a1d27;--surface2:#22263a;--surface3:#2a2f47;
+  --text:#eef0f8;--text2:#8b90b0;--text3:#555a7a;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.14);
+  --accent:#6c63ff;--accent2:#4f46e5;
+  --teal:#2dd4a0;--teal-bg:rgba(45,212,160,0.12);--teal-bd:rgba(45,212,160,0.4);
+  --purple:#a78bfa;--purple-bg:rgba(167,139,250,0.12);--purple-bd:rgba(167,139,250,0.4);
+  --amber:#fbbf24;--amber-bg:rgba(251,191,36,0.12);--amber-bd:rgba(251,191,36,0.4);
+  --coral:#f87171;--coral-bg:rgba(248,113,113,0.12);--coral-bd:rgba(248,113,113,0.4);
+  --pink:#f472b6;--pink-bg:rgba(244,114,182,0.12);--pink-bd:rgba(244,114,182,0.4);
+  --sky:#38bdf8;--sky-bg:rgba(56,189,248,0.12);--sky-bd:rgba(56,189,248,0.4);
+  --red:#f87171;--red-bg:rgba(248,113,113,0.15);--red-bd:rgba(248,113,113,0.5);
+  --green:#4ade80;--green-bg:rgba(74,222,128,0.12);--green-bd:rgba(74,222,128,0.4);
+  --radius:10px;--radius-lg:16px;--radius-xl:22px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0}
+
+/* LAYOUT */
+.app{display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--surface);border-bottom:0.5px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+.logo{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--teal));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.topbar-title{font-size:15px;font-weight:600;letter-spacing:-0.02em}
+.topbar-sub{font-size:11px;color:var(--text2);margin-top:1px}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.status-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e88;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.status-label{font-size:11px;color:var(--text2)}
+
+.main{flex:1;padding:20px;max-width:1000px;margin:0 auto;width:100%}
+
+/* CARDS */
+.card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px}
+.card-title{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.card-title svg{opacity:0.6}
+
+/* BUTTONS */
+.btn{height:36px;padding:0 16px;border-radius:var(--radius);cursor:pointer;font-size:13px;font-family:'Sora',sans-serif;font-weight:500;transition:all 0.15s;border:0.5px solid var(--border2);background:var(--surface2);color:var(--text);white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:var(--surface3);border-color:var(--border2)}
+.btn:active{transform:scale(0.97)}
+.btn-accent{background:var(--accent);border-color:transparent;color:#fff}
+.btn-accent:hover{background:var(--accent2)}
+.btn-sm{height:30px;padding:0 12px;font-size:12px}
+.btn-danger{background:var(--red-bg);border-color:var(--red-bd);color:var(--red)}
+.btn-danger:hover{background:rgba(248,113,113,0.25)}
+
+/* INPUT */
+.input{height:36px;border:0.5px solid var(--border2);border-radius:var(--radius);padding:0 12px;font-size:13px;font-family:'Sora',sans-serif;background:var(--surface2);color:var(--text);outline:none;width:100%;transition:border-color 0.15s}
+.input:focus{border-color:var(--accent)}
+.input::placeholder{color:var(--text3)}
+
+/* ADD ROW */
+.add-row{display:flex;gap:8px;margin-bottom:14px}
+.add-row .input{flex:1}
+
+/* PERSONS LIST */
+.persons-list{display:flex;flex-direction:column;gap:6px}
+.person-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius);transition:border-color 0.15s,background 0.15s;cursor:default}
+.person-item.dragging{opacity:0.4;border:1.5px dashed var(--accent)}
+.person-item.drag-over{border-color:var(--accent);background:var(--surface3)}
+.drag-handle{cursor:grab;color:var(--text3);font-size:14px;padding:2px 4px;flex-shrink:0;display:flex;align-items:center}
+.drag-handle:active{cursor:grabbing}
+.person-badge{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;border:0.5px solid}
+.person-name{flex:1;font-size:13px;font-weight:500}
+.person-order{font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;margin-right:4px}
+.person-actions{display:flex;gap:6px}
+
+/* PALETTE */
+.p0{color:var(--teal);background:var(--teal-bg);border-color:var(--teal-bd)}
+.p1{color:var(--purple);background:var(--purple-bg);border-color:var(--purple-bd)}
+.p2{color:var(--amber);background:var(--amber-bg);border-color:var(--amber-bd)}
+.p3{color:var(--coral);background:var(--coral-bg);border-color:var(--coral-bd)}
+.p4{color:var(--pink);background:var(--pink-bg);border-color:var(--pink-bd)}
+.p5{color:var(--sky);background:var(--sky-bg);border-color:var(--sky-bd)}
+.p6{color:var(--green);background:var(--green-bg);border-color:var(--green-bd)}
+
+.cell-p0{background:var(--teal-bg);color:var(--teal);border-color:var(--teal-bd)}
+.cell-p1{background:var(--purple-bg);color:var(--purple);border-color:var(--purple-bd)}
+.cell-p2{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd)}
+.cell-p3{background:var(--coral-bg);color:var(--coral);border-color:var(--coral-bd)}
+.cell-p4{background:var(--pink-bg);color:var(--pink);border-color:var(--pink-bd)}
+.cell-p5{background:var(--sky-bg);color:var(--sky);border-color:var(--sky-bd)}
+.cell-p6{background:var(--green-bg);color:var(--green);border-color:var(--green-bd)}
+.cell-guardia{background:var(--red-bg);color:var(--red);border-color:var(--red-bd)}
+.cell-libre{background:var(--surface2);color:var(--text3);border-color:var(--border)}
+
+/* WEEK NAV */
+.week-bar{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+.week-nav{display:flex;align-items:center;gap:4px;background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius);padding:4px 6px}
+.week-nav button{background:transparent;border:none;cursor:pointer;font-size:16px;color:var(--text2);padding:2px 8px;border-radius:6px;transition:background 0.1s,color 0.1s;line-height:1}
+.week-nav button:hover{background:var(--surface3);color:var(--text)}
+#weekLabel{font-size:12px;font-weight:500;color:var(--text);min-width:160px;text-align:center;font-family:'DM Mono',monospace}
+.week-bar .ml-auto{margin-left:auto}
+
+/* LEGEND */
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
+.ldot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* GRID */
+.grid-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.grid{display:grid;gap:4px;min-width:480px}
+.cell{border-radius:8px;padding:7px 5px;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:0.5px solid;font-size:10px;text-align:center;transition:transform 0.1s}
+.cell-hd{background:transparent;border-color:transparent;min-height:40px;justify-content:flex-end;padding-bottom:5px}
+.day-name{font-size:11px;font-weight:500;color:var(--text2)}
+.day-date{font-size:9px;color:var(--text3);font-family:'DM Mono',monospace}
+.cell-hd.is-today .day-name,.cell-hd.is-today .day-date{color:var(--accent)}
+.cell-person{background:transparent;border-color:transparent;align-items:flex-start;padding-left:4px;justify-content:center;min-height:56px}
+.cell-person-name{font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:80px}
+.cell.is-today{outline:1.5px solid var(--accent);outline-offset:-2px}
+.badge{font-size:9px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase}
+.sub-badge{font-size:8px;opacity:0.7}
+
+/* INFO BOX */
+.info-box{background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-top:12px}
+.info-box p{font-size:12px;color:var(--text2);line-height:1.65}
+.info-box strong{color:var(--text);font-weight:500}
+
+/* ROTATION TABLE */
+.rot-table{width:100%;border-collapse:collapse;font-size:12px}
+.rot-table th{text-align:left;font-weight:500;color:var(--text2);padding:7px 8px;border-bottom:0.5px solid var(--border)}
+.rot-table td{padding:7px 8px;border-bottom:0.5px solid var(--border)}
+.rot-table tr:last-child td{border-bottom:none}
+.rot-table tr.curr td{background:rgba(108,99,255,0.06)}
+.mini-badge{display:inline-block;font-size:9px;font-weight:600;padding:2px 8px;border-radius:100px;border:0.5px solid}
+
+/* ADMIN */
+.admin-bar{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding:10px 12px;background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius);flex-wrap:wrap}
+.admin-status{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:6px}
+.lock-icon{font-size:14px}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal{background:var(--surface);border:0.5px solid var(--border2);border-radius:var(--radius-xl);padding:28px;max-width:340px;width:100%;animation:popIn 0.2s ease}
+@keyframes popIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
+.modal h3{font-size:17px;font-weight:600;margin-bottom:6px;letter-spacing:-0.02em}
+.modal p{font-size:13px;color:var(--text2);margin-bottom:18px;line-height:1.5}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+.error-msg{font-size:12px;color:var(--red);margin-top:6px;min-height:16px}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:0.5px solid var(--border2);border-radius:var(--radius);padding:10px 18px;font-size:13px;font-weight:500;z-index:300;opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{border-color:var(--teal-bd);color:var(--teal)}
+.toast.err{border-color:var(--red-bd);color:var(--red)}
+
+/* EMPTY */
+.empty-state{text-align:center;padding:40px 20px;color:var(--text3);font-size:13px}
+
+/* SETUP NOTICE */
+.setup-notice{background:var(--amber-bg);border:0.5px solid var(--amber-bd);border-radius:var(--radius);padding:14px;margin-bottom:16px;font-size:12px;color:var(--amber);line-height:1.7}
+.setup-notice pre{background:rgba(0,0,0,0.3);border-radius:6px;padding:10px;margin-top:8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);overflow-x:auto;white-space:pre-wrap}
+.setup-notice summary{cursor:pointer;font-weight:600;margin-bottom:4px}
+
+/* MOBILE */
+@media(max-width:600px){
+  .main{padding:14px}
+  .card{padding:14px}
+  .topbar{padding:12px 14px}
+  .topbar-title{font-size:14px}
+  .rot-table th:nth-child(1),.rot-table td:nth-child(1){display:none}
+  .rot-table th:nth-child(2),.rot-table td:nth-child(2){font-size:10px}
+  #weekLabel{min-width:120px;font-size:11px}
+  .cell-person-name{max-width:56px;font-size:11px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="logo">🗓️</div>
+  <div>
+    <div class="topbar-title">Horario Rotativo</div>
+    <div class="topbar-sub">Turnos semanales con guardia dominical</div>
+  </div>
+  <div class="topbar-right">
+    <div class="status-dot" id="statusDot" style="background:#555a7a;box-shadow:none"></div>
+    <span class="status-label" id="statusLabel">Conectando...</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- SETUP NOTICE -->
+  <details class="setup-notice" id="setupNotice">
+    <summary>⚠️ Primer uso: crear tablas en Supabase (clic para ver instrucciones)</summary>
+    Ve a tu proyecto Supabase → <strong>SQL Editor</strong> → pega y ejecuta este SQL:
+    <pre>-- Tabla de personas
+CREATE TABLE IF NOT EXISTS persons (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  name text NOT NULL,
+  sort_order integer NOT NULL DEFAULT 0,
+  created_at timestamptz DEFAULT now()
+);
+
+-- Tabla de configuración
+CREATE TABLE IF NOT EXISTS schedule_config (
+  id integer PRIMARY KEY DEFAULT 1,
+  ref_monday date NOT NULL DEFAULT '2025-01-06',
+  updated_at timestamptz DEFAULT now()
+);
+
+-- Insertar config inicial
+INSERT INTO schedule_config (id, ref_monday)
+VALUES (1, '2025-01-06')
+ON CONFLICT (id) DO NOTHING;
+
+-- Permisos públicos (anon)
+ALTER TABLE persons ENABLE ROW LEVEL SECURITY;
+ALTER TABLE schedule_config ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "public read persons" ON persons FOR SELECT USING (true);
+CREATE POLICY "public write persons" ON persons FOR ALL USING (true);
+CREATE POLICY "public read config" ON schedule_config FOR SELECT USING (true);
+CREATE POLICY "public write config" ON schedule_config FOR ALL USING (true);</pre>
+    Luego cierra este aviso. ¡Solo se hace una vez!
+  </details>
+
+  <!-- ADMIN BAR -->
+  <div class="admin-bar">
+    <span class="admin-status">
+      <span class="lock-icon" id="lockIcon">🔒</span>
+      <span id="adminStatus">Modo solo lectura</span>
+    </span>
+    <div style="margin-left:auto;display:flex;gap:8px">
+      <button class="btn btn-sm" id="adminBtn" onclick="showAdminModal()">Editar</button>
+      <button class="btn btn-sm btn-danger" id="logoutBtn" onclick="logout()" style="display:none">Salir</button>
+    </div>
+  </div>
+
+  <!-- PANEL PERSONAS -->
+  <div class="card" id="editPanel" style="display:none">
+    <div class="card-title">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Integrantes del equipo
+    </div>
+    <div class="add-row">
+      <input type="text" class="input" id="nameInput" placeholder="Nombre..." maxlength="30"/>
+      <button class="btn btn-accent" onclick="addPerson()">+ Agregar</button>
+    </div>
+    <div class="persons-list" id="personsList"></div>
+    <div style="margin-top:10px;font-size:11px;color:var(--text3)">
+      ☰ Arrastra para cambiar el orden · el orden define la rotación
+    </div>
+  </div>
+
+  <!-- PERSONAS (solo lectura) -->
+  <div class="card" id="viewPanel">
+    <div class="card-title">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Integrantes
+    </div>
+    <div class="chips" id="viewChips" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+  </div>
+
+  <!-- CALENDARIO -->
+  <div class="card">
+    <div class="card-title">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Calendario semanal
+    </div>
+
+    <div class="week-bar">
+      <div class="week-nav">
+        <button onclick="changeWeek(-1)">&#8592;</button>
+        <span id="weekLabel">—</span>
+        <button onclick="changeWeek(1)">&#8594;</button>
+      </div>
+      <button class="btn btn-sm ml-auto" onclick="goToday()">Hoy</button>
+    </div>
+
+    <div class="legend" id="legendEl"></div>
+    <div class="grid-scroll"><div class="grid" id="calGrid"></div></div>
+    <div class="info-box"><p id="infoText">Cargando...</p></div>
+  </div>
+
+  <!-- ROTACIÓN -->
+  <div class="card" id="rotCard" style="display:none">
+    <div class="card-title">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.5 15a9 9 0 1 1-2.1-9.4L23 10"/></svg>
+      Rotación de semanas
+    </div>
+    <div style="overflow-x:auto">
+      <table class="rot-table" id="rotTable"></table>
+    </div>
+  </div>
+
+</div><!-- /main -->
+</div><!-- /app -->
+
+<!-- MODAL ADMIN -->
+<div class="modal-overlay" id="adminModal" style="display:none">
+  <div class="modal">
+    <div style="font-size:28px;margin-bottom:10px">🔐</div>
+    <h3>Acceso de edición</h3>
+    <p>Ingresa la contraseña de administrador para editar el horario.</p>
+    <input type="password" class="input" id="pwdInput" placeholder="Contraseña..." onkeydown="if(event.key==='Enter')checkPassword()"/>
+    <div class="error-msg" id="pwdError"></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeAdminModal()">Cancelar</button>
+      <button class="btn btn-accent" onclick="checkPassword()">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── CONFIG ───────────────────────────────────────────────
+const SUPABASE_URL = 'https://jxpeztieqwotfgswhzhx.supabase.co';
+const ANON_KEY     = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4cGV6dGllcXdvdGZnc3doemh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA4MzQ4MDQsImV4cCI6MjA4NjQxMDgwNH0.Hf-lbGlP2OmH7Uh2LNKqwHkwHDp7yQV6O73aXw5NCZk';
+const ADMIN_PASS   = 'admin1234';
+const PALETTE      = ['p0','p1','p2','p3','p4','p5','p6'];
+const PAL_COLORS   = ['#2dd4a0','#a78bfa','#fbbf24','#f87171','#f472b6','#38bdf8','#4ade80'];
+const DAYS_SHORT   = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+
+// ─── STATE ────────────────────────────────────────────────
+let persons      = [];   // [{id, name, sort_order}]
+let weekOffset   = 0;
+let isAdmin      = false;
+let dragSrcIdx   = null;
+let refMonday    = new Date(2025, 0, 6);  // from DB
+let realtimeCh   = null;
+
+const today = new Date();
+today.setHours(0,0,0,0);
+
+// ─── SUPABASE HELPERS ─────────────────────────────────────
+const hdrs = {
+  'apikey': ANON_KEY,
+  'Authorization': 'Bearer ' + ANON_KEY,
+  'Content-Type': 'application/json',
+  'Prefer': 'return=representation'
+};
+
+async function sbGet(table, qs=''){
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}${qs}`, {headers: hdrs});
+  return r.json();
+}
+async function sbPost(table, body){
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {method:'POST', headers: hdrs, body: JSON.stringify(body)});
+  return r.json();
+}
+async function sbPatch(table, qs, body){
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}${qs}`, {method:'PATCH', headers: hdrs, body: JSON.stringify(body)});
+  return r.json();
+}
+async function sbDelete(table, qs){
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}${qs}`, {method:'DELETE', headers: hdrs});
+  return r.ok;
+}
+
+// ─── REALTIME ─────────────────────────────────────────────
+function connectRealtime(){
+  // Supabase realtime via WebSocket
+  const wsUrl = SUPABASE_URL.replace('https','wss') + '/realtime/v1/websocket?apikey=' + ANON_KEY + '&vsn=1.0.0';
+  const ws = new WebSocket(wsUrl);
+  ws.onopen = () => {
+    setStatus(true);
+    ws.send(JSON.stringify({topic:'realtime:public:persons', event:'phx_join', payload:{}, ref:'1'}));
+    ws.send(JSON.stringify({topic:'realtime:public:schedule_config', event:'phx_join', payload:{}, ref:'2'}));
+    // Heartbeat
+    setInterval(() => ws.readyState===1 && ws.send(JSON.stringify({topic:'phoenix',event:'heartbeat',payload:{},ref:'hb'})), 25000);
+  };
+  ws.onmessage = (e) => {
+    try{
+      const msg = JSON.parse(e.data);
+      if(msg.event === 'INSERT' || msg.event === 'UPDATE' || msg.event === 'DELETE'){
+        loadData();
+      }
+    }catch{}
+  };
+  ws.onclose = () => { setStatus(false); setTimeout(connectRealtime, 3000); };
+  ws.onerror = () => { setStatus(false); };
+}
+
+function setStatus(ok){
+  const dot = document.getElementById('statusDot');
+  const lbl = document.getElementById('statusLabel');
+  if(ok){ dot.style.background='#22c55e'; dot.style.boxShadow='0 0 6px #22c55e88'; lbl.textContent='En vivo'; }
+  else  { dot.style.background='#555a7a'; dot.style.boxShadow='none'; lbl.textContent='Reconectando...'; }
+}
+
+// ─── DATA LOAD ────────────────────────────────────────────
+async function loadData(){
+  try{
+    const [pRows, cfg] = await Promise.all([
+      sbGet('persons','?order=sort_order.asc'),
+      sbGet('schedule_config','?id=eq.1')
+    ]);
+    if(Array.isArray(pRows)) persons = pRows;
+    if(Array.isArray(cfg) && cfg[0] && cfg[0].ref_monday){
+      const d = new Date(cfg[0].ref_monday);
+      d.setHours(0,0,0,0);
+      refMonday = d;
+    }
+    render();
+    document.getElementById('setupNotice').style.display = persons.length>0 ? 'none' : '';
+  }catch(e){
+    toast('Error al cargar datos','err');
+  }
+}
+
+// ─── PERSON CRUD ──────────────────────────────────────────
+async function addPerson(){
+  if(!isAdmin){showAdminModal();return;}
+  const inp = document.getElementById('nameInput');
+  const name = inp.value.trim();
+  if(!name) return;
+  if(persons.find(p=>p.name.toLowerCase()===name.toLowerCase())){toast('Nombre ya existe','err');return;}
+  const order = persons.length > 0 ? Math.max(...persons.map(p=>p.sort_order)) + 1 : 0;
+  const res = await sbPost('persons', {name, sort_order: order});
+  if(Array.isArray(res) && res[0]){ inp.value=''; toast('Persona agregada','ok'); }
+  else toast('Error al agregar','err');
+}
+
+async function removePerson(id){
+  if(!isAdmin) return;
+  if(!confirm('¿Eliminar esta persona?')) return;
+  await sbDelete('persons', `?id=eq.${id}`);
+  toast('Persona eliminada','ok');
+}
+
+async function saveOrder(){
+  const updates = persons.map((p,i) => sbPatch('persons', `?id=eq.${p.id}`, {sort_order: i}));
+  await Promise.all(updates);
+  toast('Orden guardado','ok');
+}
+
+// ─── DRAG & DROP ──────────────────────────────────────────
+function onDragStart(e, idx){ dragSrcIdx = idx; e.currentTarget.classList.add('dragging'); }
+function onDragEnd(e){ e.currentTarget.classList.remove('dragging'); document.querySelectorAll('.person-item').forEach(el=>el.classList.remove('drag-over')); }
+function onDragOver(e, idx){ e.preventDefault(); document.querySelectorAll('.person-item').forEach(el=>el.classList.remove('drag-over')); if(dragSrcIdx!==idx) e.currentTarget.classList.add('drag-over'); }
+function onDrop(e, idx){
+  e.preventDefault();
+  if(dragSrcIdx===null||dragSrcIdx===idx) return;
+  const arr = [...persons];
+  const [moved] = arr.splice(dragSrcIdx,1);
+  arr.splice(idx,0,moved);
+  persons = arr;
+  dragSrcIdx = null;
+  render();
+  saveOrder();
+}
+
+// ─── SCHEDULE LOGIC ───────────────────────────────────────
+function getMondayOfWeek(date){
+  const d = new Date(date);
+  const day = d.getDay();
+  d.setDate(d.getDate() + (day===0?-6:1-day));
+  d.setHours(0,0,0,0);
+  return d;
+}
+
+function getCurrentMonday(){
+  const base = getMondayOfWeek(today);
+  base.setDate(base.getDate() + weekOffset*7);
+  return base;
+}
+
+function getWeekIndex(monday){
+  return Math.round((monday - refMonday) / (7*24*3600*1000));
+}
+
+function getWeekData(monday){
+  if(!persons.length) return {days:[],assignerIdx:-1,guardiaIdx:-1};
+  const n = persons.length;
+  const wi = getWeekIndex(monday);
+  const ai = ((wi % n) + n) % n;
+  const gi = (ai + 1) % n;
+  const days = [];
+  for(let i=0;i<7;i++){
+    const d = new Date(monday);
+    d.setDate(d.getDate()+i);
+    const isDom = i===6;
+    const slots = persons.map((_,pi)=>{
+      if(isDom) return pi===ai?'libre':pi===gi?'guardia':'libre';
+      return pi===ai?'asigna':'libre';
+    });
+    days.push({date:d, slots});
+  }
+  return {days, assignerIdx:ai, guardiaIdx:gi};
+}
+
+function formatDate(d){ return d.toLocaleDateString('es-ES',{day:'2-digit',month:'short'}); }
+function formatFull(d){ return d.toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}); }
+
+// ─── RENDER ───────────────────────────────────────────────
+function render(){
+  renderAdminUI();
+  renderViewChips();
+  renderPersonsList();
+  renderLegend();
+  const monday = getCurrentMonday();
+  const sunday = new Date(monday); sunday.setDate(sunday.getDate()+6);
+  document.getElementById('weekLabel').textContent = formatDate(monday)+' – '+formatDate(sunday);
+  renderGrid(monday);
+  renderInfo(monday);
+  renderRotTable(monday);
+}
+
+function renderAdminUI(){
+  document.getElementById('editPanel').style.display = isAdmin?'':'none';
+  document.getElementById('viewPanel').style.display = isAdmin?'none':'';
+  document.getElementById('adminStatus').textContent = isAdmin?'Modo edición activo':'Modo solo lectura';
+  document.getElementById('lockIcon').textContent = isAdmin?'🔓':'🔒';
+  document.getElementById('logoutBtn').style.display = isAdmin?'':'none';
+}
+
+function renderViewChips(){
+  const el = document.getElementById('viewChips');
+  el.innerHTML = '';
+  if(!persons.length){ el.innerHTML='<span style="font-size:12px;color:var(--text3);font-style:italic">Sin personas aún</span>'; return; }
+  persons.forEach((p,i)=>{
+    const chip = document.createElement('div');
+    chip.className = 'mini-badge ' + PALETTE[i%PALETTE.length];
+    chip.style.cssText = 'padding:6px 12px;font-size:12px;border-radius:100px;font-weight:500';
+    chip.textContent = (i+1)+'. '+p.name;
+    el.appendChild(chip);
+  });
+}
+
+function renderPersonsList(){
+  const el = document.getElementById('personsList');
+  el.innerHTML = '';
+  if(!persons.length){ el.innerHTML='<div class="empty-state">Agrega personas para comenzar</div>'; return; }
+  persons.forEach((p,i)=>{
+    const item = document.createElement('div');
+    item.className = 'person-item';
+    item.draggable = true;
+    item.dataset.idx = i;
+    item.addEventListener('dragstart', e=>onDragStart(e,i));
+    item.addEventListener('dragend',   e=>onDragEnd(e));
+    item.addEventListener('dragover',  e=>onDragOver(e,i));
+    item.addEventListener('drop',      e=>onDrop(e,i));
+    const pal = PALETTE[i%PALETTE.length];
+    const col = PAL_COLORS[i%PAL_COLORS.length];
+    item.innerHTML = `
+      <div class="drag-handle">☰</div>
+      <div class="person-badge ${pal}">${p.name.charAt(0).toUpperCase()}</div>
+      <span class="person-name">${p.name}</span>
+      <span class="person-order">#${i+1}</span>
+      <div class="person-actions">
+        <button class="btn btn-sm btn-danger" onclick="removePerson('${p.id}')">✕</button>
+      </div>`;
+    el.appendChild(item);
+  });
+}
+
+function renderLegend(){
+  const el = document.getElementById('legendEl');
+  el.innerHTML = '';
+  persons.forEach((p,i)=>{
+    const div = document.createElement('div'); div.className='legend-item';
+    div.innerHTML=`<div class="ldot" style="background:${PAL_COLORS[i%PAL_COLORS.length]}"></div>${p.name} asigna`;
+    el.appendChild(div);
+  });
+  el.innerHTML += `<div class="legend-item"><div class="ldot" style="background:var(--red)"></div>Guardia dom.</div>
+                   <div class="legend-item"><div class="ldot" style="background:var(--text3)"></div>Libre</div>`;
+}
+
+function renderGrid(monday){
+  const {days, assignerIdx, guardiaIdx} = getWeekData(monday);
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+  const cols = 1 + 7;
+  grid.style.gridTemplateColumns = '80px repeat(7, 1fr)';
+
+  // corner
+  const corner = document.createElement('div'); corner.className='cell cell-hd'; grid.appendChild(corner);
+  // headers
+  days.forEach((d,i)=>{
+    const isToday = d.date.getTime()===today.getTime();
+    const hd = document.createElement('div');
+    hd.className='cell cell-hd'+(isToday?' is-today':'');
+    hd.innerHTML=`<span class="day-name">${DAYS_SHORT[i]}</span><span class="day-date">${formatDate(d.date)}</span>`;
+    grid.appendChild(hd);
+  });
+  // rows
+  persons.forEach((p,pi)=>{
+    const lbl = document.createElement('div'); lbl.className='cell cell-person';
+    lbl.innerHTML=`<span class="cell-person-name">${p.name}</span>`; grid.appendChild(lbl);
+    days.forEach(d=>{
+      const val = d.slots[pi];
+      const isToday = d.date.getTime()===today.getTime();
+      const cell = document.createElement('div');
+      let cls='cell ';
+      let badge='';
+      if(val==='asigna'){cls+='cell-'+PALETTE[pi%PALETTE.length];badge='Asignando';}
+      else if(val==='guardia'){cls+='cell-guardia';badge='Guardia';}
+      else{cls+='cell-libre';badge='Libre';}
+      if(isToday) cls+=' is-today';
+      cell.className=cls;
+      cell.innerHTML=`<span class="badge">${badge}</span>`;
+      grid.appendChild(cell);
+    });
+  });
+
+  document.getElementById('rotCard').style.display = persons.length?'':'none';
+}
+
+function renderInfo(monday){
+  const sunday = new Date(monday); sunday.setDate(sunday.getDate()+6);
+  const {assignerIdx, guardiaIdx} = getWeekData(monday);
+  const el = document.getElementById('infoText');
+  if(!persons.length){el.innerHTML='Agrega personas para comenzar.';return;}
+  const asigna = persons[assignerIdx].name;
+  const guardia = persons[guardiaIdx].name;
+  let wl = weekOffset===0?'Esta semana':weekOffset>0?`En ${weekOffset} semana${weekOffset>1?'s':''}`:`Hace ${Math.abs(weekOffset)} semana${Math.abs(weekOffset)>1?'s':''}`;
+  el.innerHTML=`<strong>${wl} (${formatFull(monday)} – ${formatFull(sunday)}):</strong> <strong>${asigna}</strong> asigna lunes–sábado y descansa el domingo. <strong>${guardia}</strong> hace guardia el domingo.`;
+}
+
+function renderRotTable(monday){
+  const card = document.getElementById('rotCard');
+  const table = document.getElementById('rotTable');
+  if(!persons.length){card.style.display='none';return;}
+  card.style.display='';
+  const n = persons.length;
+  let html=`<tr><th>#</th><th>Semana</th><th>Asigna</th><th>Guardia domingo</th><th></th></tr>`;
+  for(let off=-1; off<=n+2; off++){
+    const m = new Date(monday); m.setDate(m.getDate()+off*7);
+    const sun = new Date(m); sun.setDate(sun.getDate()+6);
+    const wi = getWeekIndex(m);
+    const ai = ((wi%n)+n)%n;
+    const gi = (ai+1)%n;
+    const isCurr = off===0;
+    const tag = isCurr
+      ? `<span class="mini-badge" style="background:var(--accent);color:#fff;border-color:transparent">En curso</span>`
+      : off<0
+      ? `<span class="mini-badge cell-libre">Pasada</span>`
+      : `<span class="mini-badge cell-libre">Próxima</span>`;
+    html+=`<tr${isCurr?' class="curr"':''}>
+      <td style="color:var(--text3);font-family:'DM Mono',monospace">${wi}</td>
+      <td style="font-size:11px;font-family:'DM Mono',monospace">${formatDate(m)} – ${formatDate(sun)}</td>
+      <td><span class="mini-badge ${PALETTE[ai%PALETTE.length]}" style="border-radius:100px">${persons[ai].name}</span></td>
+      <td><span class="mini-badge cell-guardia" style="border-radius:100px">${persons[gi].name}</span></td>
+      <td>${tag}</td></tr>`;
+  }
+  table.innerHTML=html;
+}
+
+// ─── NAVIGATION ───────────────────────────────────────────
+function changeWeek(dir){ weekOffset+=dir; render(); }
+function goToday(){ weekOffset=0; render(); }
+
+// ─── ADMIN AUTH ───────────────────────────────────────────
+function showAdminModal(){
+  document.getElementById('adminModal').style.display='flex';
+  document.getElementById('pwdInput').value='';
+  document.getElementById('pwdError').textContent='';
+  setTimeout(()=>document.getElementById('pwdInput').focus(),100);
+}
+function closeAdminModal(){ document.getElementById('adminModal').style.display='none'; }
+function checkPassword(){
+  const pwd = document.getElementById('pwdInput').value;
+  if(pwd===ADMIN_PASS){
+    isAdmin=true; closeAdminModal(); render(); toast('Acceso concedido ✓','ok');
+  } else {
+    document.getElementById('pwdError').textContent='Contraseña incorrecta';
+    document.getElementById('pwdInput').value='';
+    document.getElementById('pwdInput').focus();
+  }
+}
+function logout(){ isAdmin=false; render(); toast('Sesión cerrada','ok'); }
+
+// ─── TOAST ────────────────────────────────────────────────
+let toastTimer;
+function toast(msg, type='ok'){
+  const el = document.getElementById('toast');
+  clearTimeout(toastTimer);
+  el.textContent=msg; el.className='toast show '+(type==='ok'?'ok':'err');
+  toastTimer=setTimeout(()=>el.className='toast',2800);
+}
+
+// ─── ADD input Enter ─────────────────────────────────────
+document.getElementById('nameInput').addEventListener('keydown',e=>{ if(e.key==='Enter') addPerson(); });
+
+// ─── CLOSE MODAL ON OVERLAY CLICK ────────────────────────
+document.getElementById('adminModal').addEventListener('click',e=>{ if(e.target===e.currentTarget) closeAdminModal(); });
+
+// ─── INIT ─────────────────────────────────────────────────
+loadData().then(()=>{ connectRealtime(); });
+</script>
+</body>
+</html>
