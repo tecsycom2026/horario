@@ -2,175 +2,221 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Horario Rotativo</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestión · Horarios</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f4f6fb;--surface:#ffffff;--surface2:#f0f2f8;--surface3:#e4e8f4;
-  --text:#1e2235;--text2:#5a6080;--text3:#9ea5c0;
-  --border:rgba(30,34,53,0.09);--border2:rgba(30,34,53,0.16);
-  --accent:#4f63d2;--accent2:#3a4db8;
-  --teal:#0d9e6e;--teal-bg:#e6f7f2;--teal-bd:#7dd4b8;
-  --purple:#6344c8;--purple-bg:#eeebfc;--purple-bd:#b9a9f0;
-  --amber:#b07800;--amber-bg:#fdf3db;--amber-bd:#f0c84a;
-  --coral:#c0422a;--coral-bg:#fdeee9;--coral-bd:#f0a48e;
-  --pink:#b03478;--pink-bg:#fce9f3;--pink-bd:#eda8d0;
-  --sky:#1a7ab5;--sky-bg:#e5f3fc;--sky-bd:#82c4ee;
-  --red:#b83232;--red-bg:#fdeaea;--red-bd:#f09090;
-  --green:#1e7e44;--green-bg:#e8f7ed;--green-bd:#7dcf9b;
-  --radius:10px;--radius-lg:16px;--radius-xl:22px;
+  --bg:#0f1117;--surface:#181c27;--surface2:#1f2436;--surface3:#272d40;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --tx:#f0f2f8;--tx2:#8b93b0;--tx3:#4e566e;
+  --blue:#4f8ef7;--blue2:#3570d4;--blue-g:rgba(79,142,247,0.22);
+  --t1:#22c55e;--t1-bg:rgba(34,197,94,0.12);--t1-bd:rgba(34,197,94,0.28);
+  --t2:#a78bfa;--t2-bg:rgba(167,139,250,0.12);--t2-bd:rgba(167,139,250,0.28);
+  --t3:#fbbf24;--t3-bg:rgba(251,191,36,0.12);--t3-bd:rgba(251,191,36,0.28);
+  --grd:#38bdf8;--grd-bg:rgba(56,189,248,0.12);--grd-bd:rgba(56,189,248,0.28);
+  --des:#f87171;--des-bg:rgba(248,113,113,0.12);--des-bd:rgba(248,113,113,0.28);
+  --lib:#4e566e;--lib-bg:rgba(78,86,110,0.08);--lib-bd:rgba(78,86,110,0.18);
+  --r:10px;--r-lg:14px;--r-xl:20px;
 }
-html{scroll-behavior:smooth}
-body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:10px}
 
-/* LAYOUT */
 .app{display:flex;flex-direction:column;min-height:100vh}
-.topbar{background:var(--surface);border-bottom:0.5px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
-.logo{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),#38b2ac);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 2px 8px rgba(79,99,210,0.2)}
-.topbar-title{font-size:15px;font-weight:600;letter-spacing:-0.02em}
-.topbar-sub{font-size:11px;color:var(--text2);margin-top:1px}
-.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.status-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e88;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
-.status-label{font-size:11px;color:var(--text2)}
 
-.main{flex:1;padding:20px;max-width:1000px;margin:0 auto;width:100%}
+/* TOP BAR */
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;height:58px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100}
+.logo{width:36px;height:36px;background:linear-gradient(135deg,var(--blue),#818cf8);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;box-shadow:0 0 18px var(--blue-g)}
+.topbar-info{flex:1;min-width:0}
+.topbar-title{font-size:15px;font-weight:800;letter-spacing:-0.02em}
+.topbar-sub{font-size:11px;color:var(--tx2);margin-top:1px}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.live-pill{display:flex;align-items:center;gap:6px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.22);border-radius:100px;padding:4px 10px}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.live-txt{font-size:11px;font-weight:700;color:#22c55e}
+
+.main{flex:1;padding:20px;max-width:1200px;margin:0 auto;width:100%}
 
 /* CARDS */
-.card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px}
-.card-title{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;display:flex;align-items:center;gap:6px}
-.card-title svg{opacity:0.6}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;margin-bottom:14px}
+.card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:10px;flex-wrap:wrap}
+.card-title{font-size:12px;font-weight:800;color:var(--tx2);text-transform:uppercase;letter-spacing:0.09em;display:flex;align-items:center;gap:8px}
+.card-icon{width:26px;height:26px;border-radius:7px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:12px;border:1px solid var(--border)}
 
 /* BUTTONS */
-.btn{height:36px;padding:0 16px;border-radius:var(--radius);cursor:pointer;font-size:13px;font-family:'Sora',sans-serif;font-weight:500;transition:all 0.15s;border:0.5px solid var(--border2);background:var(--surface2);color:var(--text);white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
-.btn:hover{background:var(--surface3);border-color:var(--border2)}
-.btn:active{transform:scale(0.97)}
-.btn-accent{background:var(--accent);border-color:transparent;color:#fff}
-.btn-accent:hover{background:var(--accent2)}
-.btn-sm{height:30px;padding:0 12px;font-size:12px}
-.btn-danger{background:var(--red-bg);border-color:var(--red-bd);color:var(--red)}
-.btn-danger:hover{background:rgba(248,113,113,0.25)}
+.btn{height:36px;padding:0 16px;border-radius:var(--r);cursor:pointer;font-size:13px;font-family:'Inter',sans-serif;font-weight:600;transition:all 0.14s;border:1px solid var(--border2);background:var(--surface2);color:var(--tx);white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:var(--surface3)}
+.btn:active{transform:scale(0.96)}
+.btn-primary{background:var(--blue);border-color:transparent;color:#fff;box-shadow:0 0 14px var(--blue-g)}
+.btn-primary:hover{background:var(--blue2)}
+.btn-sm{height:30px;padding:0 12px;font-size:12px;border-radius:8px}
+.btn-danger{background:var(--des-bg);border-color:var(--des-bd);color:var(--des)}
+.btn-ghost{background:transparent;border-color:transparent;color:var(--tx2)}
+.btn-ghost:hover{background:var(--surface2);color:var(--tx)}
 
-/* INPUT */
-.input{height:36px;border:0.5px solid var(--border2);border-radius:var(--radius);padding:0 12px;font-size:13px;font-family:'Sora',sans-serif;background:var(--surface2);color:var(--text);outline:none;width:100%;transition:border-color 0.15s}
-.input:focus{border-color:var(--accent)}
-.input::placeholder{color:var(--text3)}
+/* INPUTS */
+.input,.select{height:40px;border:1px solid var(--border2);border-radius:var(--r);padding:0 14px;font-size:14px;font-family:'Inter',sans-serif;background:var(--surface2);color:var(--tx);outline:none;width:100%;transition:border-color 0.14s,box-shadow 0.14s}
+.input:focus,.select:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-g)}
+.input::placeholder{color:var(--tx3)}
+.select option{background:var(--surface2)}
+.form-group{margin-bottom:14px}
+.form-label{font-size:11px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;display:block}
 
-/* ADD ROW */
-.add-row{display:flex;gap:8px;margin-bottom:14px}
-.add-row .input{flex:1}
+/* ADMIN BAR */
+.admin-bar{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);flex-wrap:wrap}
+.admin-status{font-size:13px;color:var(--tx2);display:flex;align-items:center;gap:8px;font-weight:500}
+.lock-ico{width:28px;height:28px;border-radius:8px;background:var(--surface2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:14px}
+.admin-bar .ml{margin-left:auto;display:flex;gap:6px}
 
-/* PERSONS LIST */
-.persons-list{display:flex;flex-direction:column;gap:6px}
-.person-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius);transition:border-color 0.15s,background 0.15s;cursor:default}
-.person-item.dragging{opacity:0.4;border:1.5px dashed var(--accent)}
-.person-item.drag-over{border-color:var(--accent);background:var(--surface3)}
-.drag-handle{cursor:grab;color:var(--text3);font-size:14px;padding:2px 4px;flex-shrink:0;display:flex;align-items:center}
-.drag-handle:active{cursor:grabbing}
-.person-badge{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;border:0.5px solid}
-.person-name{flex:1;font-size:13px;font-weight:500}
-.person-order{font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;margin-right:4px}
-.person-actions{display:flex;gap:6px}
-
-/* PALETTE */
-.p0{color:var(--teal);background:var(--teal-bg);border-color:var(--teal-bd)}
-.p1{color:var(--purple);background:var(--purple-bg);border-color:var(--purple-bd)}
-.p2{color:var(--amber);background:var(--amber-bg);border-color:var(--amber-bd)}
-.p3{color:var(--coral);background:var(--coral-bg);border-color:var(--coral-bd)}
-.p4{color:var(--pink);background:var(--pink-bg);border-color:var(--pink-bd)}
-.p5{color:var(--sky);background:var(--sky-bg);border-color:var(--sky-bd)}
-.p6{color:var(--green);background:var(--green-bg);border-color:var(--green-bd)}
-
-.cell-p0{background:var(--teal-bg);color:var(--teal);border-color:var(--teal-bd)}
-.cell-p1{background:var(--purple-bg);color:var(--purple);border-color:var(--purple-bd)}
-.cell-p2{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd)}
-.cell-p3{background:var(--coral-bg);color:var(--coral);border-color:var(--coral-bd)}
-.cell-p4{background:var(--pink-bg);color:var(--pink);border-color:var(--pink-bd)}
-.cell-p5{background:var(--sky-bg);color:var(--sky);border-color:var(--sky-bd)}
-.cell-p6{background:var(--green-bg);color:var(--green);border-color:var(--green-bd)}
-.cell-guardia{background:var(--red-bg);color:var(--red);border-color:var(--red-bd)}
-.cell-libre{background:var(--surface2);color:var(--text3);border-color:var(--border)}
+/* TABS */
+.tabs{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:4px;margin-bottom:16px}
+.tab{flex:1;height:36px;border:none;background:transparent;font-size:13px;font-family:'Inter',sans-serif;font-weight:600;color:var(--tx3);border-radius:10px;cursor:pointer;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:6px}
+.tab:hover{color:var(--tx2);background:var(--surface2)}
+.tab.active{background:var(--surface2);color:var(--tx);box-shadow:0 1px 8px rgba(0,0,0,.35)}
 
 /* WEEK NAV */
-.week-bar{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px}
-.week-nav{display:flex;align-items:center;gap:4px;background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius);padding:4px 6px}
-.week-nav button{background:transparent;border:none;cursor:pointer;font-size:16px;color:var(--text2);padding:2px 8px;border-radius:6px;transition:background 0.1s,color 0.1s;line-height:1}
-.week-nav button:hover{background:var(--surface3);color:var(--text)}
-#weekLabel{font-size:12px;font-weight:500;color:var(--text);min-width:160px;text-align:center;font-family:'DM Mono',monospace}
-.week-bar .ml-auto{margin-left:auto}
+.week-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.week-nav{display:flex;align-items:center;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);overflow:hidden}
+.week-nav button{background:transparent;border:none;cursor:pointer;width:34px;height:34px;color:var(--tx2);font-size:15px;transition:background .1s,color .1s;display:flex;align-items:center;justify-content:center}
+.week-nav button:hover{background:var(--surface3);color:var(--tx)}
+#weekLabel{font-size:12px;font-weight:600;color:var(--tx);padding:0 10px;min-width:168px;text-align:center;font-family:'JetBrains Mono',monospace;border-left:1px solid var(--border);border-right:1px solid var(--border);line-height:34px;white-space:nowrap}
+.week-actions{margin-left:auto;display:flex;gap:6px}
 
 /* LEGEND */
-.legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
-.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
-.ldot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.legend{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--tx2);font-weight:600;background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:4px 10px}
+.ldot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 
-/* GRID */
+/* EDIT HINT */
+.edit-hint{font-size:12px;color:var(--blue);margin-bottom:12px;display:none;align-items:center;gap:7px;background:var(--blue-g);border:1px solid rgba(79,142,247,.18);border-radius:8px;padding:8px 12px;font-weight:600}
+
+/* DESKTOP GRID */
 .grid-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.grid{display:grid;gap:4px;min-width:480px}
-.cell{border-radius:8px;padding:7px 5px;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:0.5px solid;font-size:10px;text-align:center;transition:transform 0.1s}
-.cell-hd{background:transparent;border-color:transparent;min-height:40px;justify-content:flex-end;padding-bottom:5px}
-.day-name{font-size:11px;font-weight:500;color:var(--text2)}
-.day-date{font-size:9px;color:var(--text3);font-family:'DM Mono',monospace}
-.cell-hd.is-today .day-name,.cell-hd.is-today .day-date{color:var(--accent)}
-.cell-person{background:transparent;border-color:transparent;align-items:flex-start;padding-left:4px;justify-content:center;min-height:56px}
-.cell-person-name{font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:80px}
-.cell.is-today{outline:1.5px solid var(--accent);outline-offset:-2px}
-.badge{font-size:9px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase}
-.sub-badge{font-size:8px;opacity:0.7}
+.sched-grid{display:grid;gap:5px;min-width:660px}
+.cell-hd{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:8px;min-height:50px}
+.day-name{font-size:13px;font-weight:700;color:var(--tx2)}
+.day-date{font-size:11px;color:var(--tx3);font-family:'JetBrains Mono',monospace;margin-top:2px}
+.cell-hd.is-today .day-name,.cell-hd.is-today .day-date{color:var(--blue)}
+.cell-person-col{display:flex;flex-direction:column;justify-content:center;padding:6px 4px 6px 2px;min-height:94px}
+.p-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;border:2px solid;margin-bottom:5px}
+.p-name{font-size:13px;font-weight:700;color:var(--tx);line-height:1.2}
+.p-sub{font-size:10px;color:var(--tx3);margin-top:2px;line-height:1.3}
+.shift-cell{border-radius:10px;padding:10px 5px;min-height:94px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1px solid;text-align:center;cursor:default;transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden}
+.shift-cell::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:currentColor;opacity:0.45}
+.shift-cell.editable{cursor:pointer}
+.shift-cell.editable:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.45)}
+.shift-cell.is-today{box-shadow:inset 0 0 0 2px var(--blue)}
+.s-label{font-size:15px;font-weight:800;letter-spacing:.02em}
+.s-time{font-size:11px;font-weight:500;font-family:'JetBrains Mono',monospace;opacity:.82;margin-top:1px}
+.s-note{font-size:10px;opacity:.65;margin-top:2px}
 
-/* INFO BOX */
-.info-box{background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-top:12px}
-.info-box p{font-size:12px;color:var(--text2);line-height:1.65}
-.info-box strong{color:var(--text);font-weight:500}
+.slot-turno1{background:var(--t1-bg);color:var(--t1);border-color:var(--t1-bd)}
+.slot-turno2{background:var(--t2-bg);color:var(--t2);border-color:var(--t2-bd)}
+.slot-turno3{background:var(--t3-bg);color:var(--t3);border-color:var(--t3-bd)}
+.slot-descanso{background:var(--des-bg);color:var(--des);border-color:var(--des-bd)}
+.slot-libre{background:var(--lib-bg);color:var(--lib);border-color:var(--lib-bd)}
+.slot-solo,.slot-guardia{background:var(--grd-bg);color:var(--grd);border-color:var(--grd-bd)}
 
-/* ROTATION TABLE */
-.rot-table{width:100%;border-collapse:collapse;font-size:12px}
-.rot-table th{text-align:left;font-weight:500;color:var(--text2);padding:7px 8px;border-bottom:0.5px solid var(--border)}
-.rot-table td{padding:7px 8px;border-bottom:0.5px solid var(--border)}
-.rot-table tr:last-child td{border-bottom:none}
-.rot-table tr.curr td{background:rgba(79,99,210,0.05)}
-.mini-badge{display:inline-block;font-size:9px;font-weight:600;padding:2px 8px;border-radius:100px;border:0.5px solid}
+/* MOBILE CALENDAR */
+@media(max-width:700px){.grid-scroll,.sched-grid{display:none!important}.mobile-cal{display:block!important}}
+@media(min-width:701px){.mobile-cal{display:none!important}}
+.mob-day{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin-bottom:10px;overflow:hidden}
+.mob-day-hd{display:flex;align-items:center;padding:11px 14px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.mob-day-name{font-size:14px;font-weight:700}
+.mob-day-date{font-size:11px;color:var(--tx3);font-family:'JetBrains Mono',monospace;margin-left:auto}
+.mob-day-today .mob-day-name{color:var(--blue)}
+.mob-rows{padding:8px 10px;display:flex;flex-direction:column;gap:5px}
+.mob-row{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;transition:background .14s}
+.mob-row.editable{cursor:pointer}
+.mob-row.editable:hover{background:var(--surface2)}
+.mob-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;border:2px solid;flex-shrink:0}
+.mob-nm{font-size:13px;font-weight:700;color:var(--tx);min-width:52px}
+.mob-badge-wrap{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.mob-lbl{font-size:13px;font-weight:800;padding:3px 12px;border-radius:100px;border:1px solid}
+.mob-time{font-size:10px;color:var(--tx3);font-family:'JetBrains Mono',monospace}
 
-/* ADMIN */
-.admin-bar{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding:10px 12px;background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius);flex-wrap:wrap}
-.admin-status{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:6px}
-.lock-icon{font-size:14px}
+/* SUMMARY TABLE */
+.sum-wrap{overflow-x:auto}
+.sum-table{width:100%;border-collapse:collapse;font-size:13px;min-width:480px}
+.sum-table th{text-align:left;font-weight:700;color:var(--tx3);padding:8px 12px;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.sum-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.sum-table tr:last-child td{border-bottom:none}
+.sum-table tbody tr:hover td{background:var(--surface2)}
+.mini-b{display:inline-flex;flex-direction:column;align-items:center;font-size:12px;font-weight:800;padding:4px 10px;border-radius:8px;border:1px solid;line-height:1.3;gap:1px}
+.mini-b-time{font-size:9px;font-weight:400;font-family:'JetBrains Mono',monospace;opacity:.8}
+.stat-n{font-size:17px;font-weight:800;font-family:'JetBrains Mono',monospace}
+
+/* TEAM CARDS */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.team-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;transition:border-color .2s,transform .2s;position:relative;overflow:hidden}
+.team-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--pc,var(--blue))}
+.team-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.team-hd{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.team-av{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;flex-shrink:0;border:2px solid}
+.team-name{font-size:16px;font-weight:800;line-height:1.1}
+.team-role{font-size:11px;color:var(--tx3);margin-top:3px;font-weight:600}
+.team-details{display:flex;flex-direction:column;gap:8px}
+.team-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--tx2)}
+.team-row-ico{width:24px;height:24px;border-radius:6px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.team-row-val{color:var(--tx);font-weight:700}
+.team-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.team-stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center}
+.team-stat-num{font-size:22px;font-weight:800;font-family:'JetBrains Mono',monospace;line-height:1}
+.team-stat-lbl{font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;margin-top:3px;font-weight:700}
+
+/* PROCESS */
+.proc-list{display:flex;flex-direction:column;gap:8px}
+.proc-item{display:flex;align-items:flex-start;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:14px;color:var(--tx2);line-height:1.6}
+.proc-num{min-width:24px;height:24px;border-radius:6px;background:var(--surface3);border:1px solid var(--border2);font-size:11px;font-weight:800;color:var(--tx3);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;flex-shrink:0;margin-top:2px}
 
 /* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(30,34,53,0.45);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
-.modal{background:var(--surface);border:0.5px solid var(--border2);border-radius:var(--radius-xl);padding:28px;max-width:340px;width:100%;animation:popIn 0.2s ease}
-@keyframes popIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
-.modal h3{font-size:17px;font-weight:600;margin-bottom:6px;letter-spacing:-0.02em}
-.modal p{font-size:13px;color:var(--text2);margin-bottom:18px;line-height:1.5}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r-xl);padding:26px;max-width:420px;width:100%;animation:popIn .22s cubic-bezier(.34,1.5,.64,1);max-height:92vh;overflow-y:auto}
+@keyframes popIn{from{transform:scale(.88) translateY(16px);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-ico{font-size:30px;margin-bottom:12px;display:block}
+.modal h3{font-size:18px;font-weight:800;margin-bottom:5px;letter-spacing:-.02em}
+.modal .sub{font-size:13px;color:var(--tx2);margin-bottom:20px;line-height:1.5}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
-.error-msg{font-size:12px;color:var(--red);margin-top:6px;min-height:16px}
+.err-msg{font-size:12px;color:var(--des);margin-top:6px;min-height:16px;font-weight:600}
+
+/* SLOT OPTIONS */
+.slot-options{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:4px}
+.slot-opt{border:2px solid var(--border);border-radius:10px;padding:10px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:all .14s;background:var(--surface2)}
+.slot-opt:hover{border-color:var(--border2);background:var(--surface3)}
+.slot-opt.sel{border-width:2px}
+.slot-opt-label{font-size:14px;font-weight:800}
+.slot-opt-time{font-size:10px;font-family:'JetBrains Mono',monospace;opacity:.7}
 
 /* TOAST */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:0.5px solid var(--border2);border-radius:var(--radius);padding:10px 18px;font-size:13px;font-weight:500;z-index:300;opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(30,34,53,0.12)}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);padding:10px 20px;font-size:13px;font-weight:700;z-index:300;opacity:0;transition:all .26s cubic-bezier(.34,1.4,.64,1);pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.5)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.toast.ok{border-color:var(--teal-bd);color:var(--teal)}
-.toast.err{border-color:var(--red-bd);color:var(--red)}
+.toast.ok{color:var(--t1);border-color:var(--t1-bd)}
+.toast.err{color:var(--des);border-color:var(--des-bd)}
 
-/* EMPTY */
-.empty-state{text-align:center;padding:40px 20px;color:var(--text3);font-size:13px}
-
-/* SETUP NOTICE */
-.setup-notice{background:var(--amber-bg);border:0.5px solid var(--amber-bd);border-radius:var(--radius);padding:14px;margin-bottom:16px;font-size:12px;color:var(--amber);line-height:1.7}
-.setup-notice pre{background:rgba(0,0,0,0.04);border-radius:6px;padding:10px;margin-top:8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);overflow-x:auto;white-space:pre-wrap;border:0.5px solid var(--amber-bd)}
-.setup-notice summary{cursor:pointer;font-weight:600;margin-bottom:4px}
-
-/* MOBILE */
-@media(max-width:600px){
-  .main{padding:14px}
+/* RESPONSIVE */
+@media(max-width:700px){
+  .main{padding:12px}
   .card{padding:14px}
-  .topbar{padding:12px 14px}
-  .topbar-title{font-size:14px}
-  .rot-table th:nth-child(1),.rot-table td:nth-child(1){display:none}
-  .rot-table th:nth-child(2),.rot-table td:nth-child(2){font-size:10px}
-  #weekLabel{min-width:120px;font-size:11px}
-  .cell-person-name{max-width:56px;font-size:11px}
+  .topbar{padding:0 14px;height:52px}
+  .topbar-sub{display:none}
+  .live-txt{display:none}
+  .live-pill{padding:4px 8px}
+  .tab .tab-txt{display:none}
+  .tab{font-size:17px}
+  .week-actions .btn-ghost{display:none}
+  #weekLabel{min-width:130px;font-size:11px;padding:0 6px}
+  .team-grid{grid-template-columns:1fr}
+  .slot-options{grid-template-columns:1fr 1fr}
+  .modal{padding:18px}
+  .admin-bar{padding:8px 12px}
+}
+@media(max-width:360px){
+  #weekLabel{min-width:110px;font-size:10px}
 }
 </style>
 </head>
@@ -179,519 +225,436 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);min-he
 
 <!-- TOP BAR -->
 <div class="topbar">
-  <div class="logo">🗓️</div>
-  <div>
-    <div class="topbar-title">Horario Rotativo</div>
-    <div class="topbar-sub">Turnos semanales con guardia dominical</div>
+  <div class="logo">🗓</div>
+  <div class="topbar-info">
+    <div class="topbar-title">Gestión · Horarios</div>
+    <div class="topbar-sub">Turnos · Horarios · Descansos</div>
   </div>
   <div class="topbar-right">
-    <div class="status-dot" id="statusDot" style="background:#b0b8d0;box-shadow:none"></div>
-    <span class="status-label" id="statusLabel">Conectando...</span>
+    <div class="live-pill">
+      <div class="live-dot"></div>
+      <span class="live-txt">En vivo</span>
+    </div>
   </div>
 </div>
 
 <div class="main">
 
-  <!-- SETUP NOTICE -->
-  <details class="setup-notice" id="setupNotice">
-    <summary>⚠️ Primer uso: crear tablas en Supabase (clic para ver instrucciones)</summary>
-    Ve a tu proyecto Supabase → <strong>SQL Editor</strong> → pega y ejecuta este SQL:
-    <pre>-- Tabla de personas
-CREATE TABLE IF NOT EXISTS persons (
-  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-  name text NOT NULL,
-  sort_order integer NOT NULL DEFAULT 0,
-  created_at timestamptz DEFAULT now()
-);
-
--- Tabla de configuración
-CREATE TABLE IF NOT EXISTS schedule_config (
-  id integer PRIMARY KEY DEFAULT 1,
-  ref_monday date NOT NULL DEFAULT '2025-01-06',
-  updated_at timestamptz DEFAULT now()
-);
-
--- Insertar config inicial
-INSERT INTO schedule_config (id, ref_monday)
-VALUES (1, '2025-01-06')
-ON CONFLICT (id) DO NOTHING;
-
--- Permisos públicos (anon)
-ALTER TABLE persons ENABLE ROW LEVEL SECURITY;
-ALTER TABLE schedule_config ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "public read persons" ON persons FOR SELECT USING (true);
-CREATE POLICY "public write persons" ON persons FOR ALL USING (true);
-CREATE POLICY "public read config" ON schedule_config FOR SELECT USING (true);
-CREATE POLICY "public write config" ON schedule_config FOR ALL USING (true);</pre>
-    Luego cierra este aviso. ¡Solo se hace una vez!
-  </details>
-
   <!-- ADMIN BAR -->
   <div class="admin-bar">
-    <span class="admin-status">
-      <span class="lock-icon" id="lockIcon">🔒</span>
-      <span id="adminStatus">Modo solo lectura</span>
-    </span>
-    <div style="margin-left:auto;display:flex;gap:8px">
+    <div class="lock-ico" id="lockIcon">🔒</div>
+    <span class="admin-status" id="adminStatus">Modo solo lectura</span>
+    <div class="ml">
       <button class="btn btn-sm" id="adminBtn" onclick="showAdminModal()">Editar</button>
       <button class="btn btn-sm btn-danger" id="logoutBtn" onclick="logout()" style="display:none">Salir</button>
     </div>
   </div>
 
-  <!-- PANEL PERSONAS -->
-  <div class="card" id="editPanel" style="display:none">
-    <div class="card-title">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-      Integrantes del equipo
-    </div>
-    <div class="add-row">
-      <input type="text" class="input" id="nameInput" placeholder="Nombre..." maxlength="30"/>
-      <button class="btn btn-accent" onclick="addPerson()">+ Agregar</button>
-    </div>
-    <div class="persons-list" id="personsList"></div>
-    <div style="margin-top:10px;font-size:11px;color:var(--text3)">
-      ☰ Arrastra para cambiar el orden · el orden define la rotación
-    </div>
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" id="tab-horario" onclick="switchTab('horario')"><span>📅</span><span class="tab-txt">Horario</span></button>
+    <button class="tab" id="tab-equipo" onclick="switchTab('equipo')"><span>👥</span><span class="tab-txt">Equipo</span></button>
+    <button class="tab" id="tab-procesos" onclick="switchTab('procesos')"><span>📋</span><span class="tab-txt">Procesos</span></button>
   </div>
 
-  <!-- PERSONAS (solo lectura) -->
-  <div class="card" id="viewPanel">
-    <div class="card-title">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-      Integrantes
-    </div>
-    <div class="chips" id="viewChips" style="display:flex;flex-wrap:wrap;gap:8px"></div>
-  </div>
-
-  <!-- CALENDARIO -->
-  <div class="card">
-    <div class="card-title">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      Calendario semanal
-    </div>
-
-    <div class="week-bar">
-      <div class="week-nav">
-        <button onclick="changeWeek(-1)">&#8592;</button>
-        <span id="weekLabel">—</span>
-        <button onclick="changeWeek(1)">&#8594;</button>
+  <!-- TAB HORARIO -->
+  <div id="view-horario">
+    <div class="card">
+      <div class="week-bar">
+        <div class="week-nav">
+          <button onclick="changeWeek(-1)">&#8592;</button>
+          <span id="weekLabel">—</span>
+          <button onclick="changeWeek(1)">&#8594;</button>
+        </div>
+        <div class="week-actions">
+          <button class="btn btn-sm btn-ghost" onclick="goToday()">Hoy</button>
+          <button class="btn btn-sm btn-primary" onclick="jumpToExcelStart()">📊 Datos Excel</button>
+        </div>
       </div>
-      <button class="btn btn-sm ml-auto" onclick="goToday()">Hoy</button>
+      <div class="legend">
+        <div class="legend-item"><div class="ldot" style="background:var(--t1)"></div>T1 · 5:30–13:30</div>
+        <div class="legend-item"><div class="ldot" style="background:var(--t2)"></div>T2 · 14:00–Cierre</div>
+        <div class="legend-item"><div class="ldot" style="background:var(--t3)"></div>T3 · 10:00–18:00</div>
+        <div class="legend-item"><div class="ldot" style="background:var(--grd)"></div>Guardia</div>
+        <div class="legend-item"><div class="ldot" style="background:var(--des)"></div>Descanso</div>
+        <div class="legend-item"><div class="ldot" style="background:var(--lib)"></div>Libre</div>
+      </div>
+      <div id="editHint" class="edit-hint">✏️ Toca cualquier celda para cambiar el turno</div>
+      <div class="grid-scroll"><div class="sched-grid" id="calGrid"></div></div>
+      <div class="mobile-cal" id="mobileCal" style="display:none"></div>
     </div>
 
-    <div class="legend" id="legendEl"></div>
-    <div class="grid-scroll"><div class="grid" id="calGrid"></div></div>
-    <div class="info-box"><p id="infoText">Cargando...</p></div>
+    <div class="card">
+      <div class="card-hd"><div class="card-title"><div class="card-icon">📊</div>Resumen de semana</div></div>
+      <div class="sum-wrap"><table class="sum-table" id="sumTable"></table></div>
+    </div>
   </div>
 
-  <!-- ROTACIÓN -->
-  <div class="card" id="rotCard" style="display:none">
-    <div class="card-title">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.5 15a9 9 0 1 1-2.1-9.4L23 10"/></svg>
-      Rotación de semanas
+  <!-- TAB EQUIPO -->
+  <div id="view-equipo" style="display:none">
+    <div class="card">
+      <div class="card-hd"><div class="card-title"><div class="card-icon">👥</div>Integrantes del equipo</div></div>
+      <div class="team-grid" id="teamGrid"></div>
     </div>
-    <div style="overflow-x:auto">
-      <table class="rot-table" id="rotTable"></table>
+    <div class="card" id="addPersonCard" style="display:none">
+      <div class="card-hd"><div class="card-title"><div class="card-icon">➕</div>Agregar integrante</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group"><label class="form-label">Nombre</label><input class="input" id="newName" placeholder="Ej: CARLOS" maxlength="30"/></div>
+        <div class="form-group"><label class="form-label">Cargo</label><input class="input" id="newCargo" placeholder="Ej: GESTOR 4"/></div>
+        <div class="form-group"><label class="form-label">Tipo de turno</label><select class="select" id="newTurnoTipo"><option value="rotacion">TURNO DE ROTACIÓN</option><option value="fijo">TURNO FIJO</option></select></div>
+        <div class="form-group"><label class="form-label">Horario</label><input class="input" id="newHorario" placeholder="Ej: 10:00 – 18:00"/></div>
+      </div>
+      <button class="btn btn-primary" onclick="addPerson()" style="margin-top:4px">+ Agregar</button>
     </div>
   </div>
 
-</div><!-- /main -->
-</div><!-- /app -->
+  <!-- TAB PROCESOS -->
+  <div id="view-procesos" style="display:none">
+    <div class="card">
+      <div class="card-hd"><div class="card-title"><div class="card-icon">📋</div>Gestión</div></div>
+      <div class="proc-list" id="gestionList"></div>
+    </div>
+    <div class="card">
+      <div class="card-hd"><div class="card-title"><div class="card-icon">✅</div>Validación</div></div>
+      <div class="proc-list" id="validList"></div>
+    </div>
+  </div>
+
+</div></div>
 
 <!-- MODAL ADMIN -->
 <div class="modal-overlay" id="adminModal" style="display:none">
   <div class="modal">
-    <div style="font-size:28px;margin-bottom:10px">🔐</div>
+    <span class="modal-ico">🔐</span>
     <h3>Acceso de edición</h3>
-    <p>Ingresa la contraseña de administrador para editar el horario.</p>
-    <input type="password" class="input" id="pwdInput" placeholder="Contraseña..." onkeydown="if(event.key==='Enter')checkPassword()"/>
-    <div class="error-msg" id="pwdError"></div>
+    <p class="sub">Ingresa la contraseña para modificar turnos y horarios.</p>
+    <div class="form-group">
+      <label class="form-label">Contraseña</label>
+      <input type="password" class="input" id="pwdInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPassword()"/>
+      <div class="err-msg" id="pwdError"></div>
+    </div>
     <div class="modal-actions">
-      <button class="btn" onclick="closeAdminModal()">Cancelar</button>
-      <button class="btn btn-accent" onclick="checkPassword()">Entrar</button>
+      <button class="btn btn-ghost" onclick="closeModal('adminModal')">Cancelar</button>
+      <button class="btn btn-primary" onclick="checkPassword()">Entrar</button>
     </div>
   </div>
 </div>
 
-<!-- TOAST -->
+<!-- MODAL EDIT CELL -->
+<div class="modal-overlay" id="cellModal" style="display:none">
+  <div class="modal">
+    <span class="modal-ico">✏️</span>
+    <h3 id="cellModalTitle">Editar turno</h3>
+    <p class="sub" id="cellModalSub"></p>
+    <div class="form-group">
+      <label class="form-label">Selecciona el turno</label>
+      <div class="slot-options" id="slotOptions"></div>
+    </div>
+    <div class="form-group" id="customTimeGroup" style="display:none">
+      <label class="form-label">Horario personalizado</label>
+      <input class="input" id="customTime" placeholder="Ej: 8:00 – 16:00"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Nota (opcional)</label>
+      <input class="input" id="cellNote" placeholder="Ej: Cubre a Michel…"/>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('cellModal')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveCellEdit()">Guardar</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── CONFIG ───────────────────────────────────────────────
-const SUPABASE_URL = 'https://jxpeztieqwotfgswhzhx.supabase.co';
-const ANON_KEY     = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4cGV6dGllcXdvdGZnc3doemh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA4MzQ4MDQsImV4cCI6MjA4NjQxMDgwNH0.Hf-lbGlP2OmH7Uh2LNKqwHkwHDp7yQV6O73aXw5NCZk';
-const ADMIN_PASS   = 'admin1234';
-const PALETTE      = ['p0','p1','p2','p3','p4','p5','p6'];
-const PAL_COLORS   = ['#0d9e6e','#6344c8','#b07800','#c0422a','#b03478','#1a7ab5','#1e7e44'];
-const DAYS_SHORT   = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
-
-// ─── STATE ────────────────────────────────────────────────
-let persons      = [];   // [{id, name, sort_order}]
-let weekOffset   = 0;
-let isAdmin      = false;
-let dragSrcIdx   = null;
-let refMonday    = new Date(2025, 0, 6);  // from DB
-let realtimeCh   = null;
-
-const today = new Date();
-today.setHours(0,0,0,0);
-
-// ─── SUPABASE HELPERS ─────────────────────────────────────
-const hdrs = {
-  'apikey': ANON_KEY,
-  'Authorization': 'Bearer ' + ANON_KEY,
-  'Content-Type': 'application/json',
-  'Prefer': 'return=representation'
+const ADMIN_PASS='admin1234';
+let persons=[
+  {id:'rosa',  name:'ROSA',  cargo:'Encargada de Gestión',turnoTipo:'Turno de Rotación',horario:'5:30 – 13:30',  hex:'#22c55e'},
+  {id:'michel',name:'MICHEL',cargo:'Gestor 1',            turnoTipo:'Turno de Rotación',horario:'14:00 – Cierre',hex:'#a78bfa'},
+  {id:'wendy', name:'WENDY', cargo:'Gestor 2',            turnoTipo:'Turno Fijo',       horario:'10:00 – 18:00', hex:'#fbbf24'},
+];
+const SLOT_META={
+  turno1:  {label:'T1',      time:'5:30–13:30',  cls:'slot-turno1',  color:'var(--t1)'},
+  turno2:  {label:'T2',      time:'14:00–Cierre',cls:'slot-turno2',  color:'var(--t2)'},
+  turno3:  {label:'T3',      time:'10:00–18:00', cls:'slot-turno3',  color:'var(--t3)'},
+  solo:    {label:'Guardia', time:'',            cls:'slot-solo',    color:'var(--grd)'},
+  descanso:{label:'Descanso',time:'',            cls:'slot-descanso',color:'var(--des)'},
+  libre:   {label:'Libre',   time:'',            cls:'slot-libre',   color:'var(--lib)'},
+  custom:  {label:'Custom',  time:'',            cls:'slot-guardia', color:'var(--grd)'},
 };
+const EXCEL_SCHEDULE={
+  '2026-04-24':{rosa:'turno2',michel:'turno2',wendy:'turno3'},
+  '2026-04-25':{rosa:'turno3',michel:'turno1',wendy:'turno3'},
+  '2026-04-26':{rosa:'libre', michel:'solo',  wendy:'libre'},
+  '2026-04-27':{rosa:'turno1',michel:'descanso',wendy:'turno3'},
+  '2026-04-28':{rosa:'turno2',michel:'turno1',wendy:'turno3'},
+  '2026-04-29':{rosa:'turno2',michel:'turno1',wendy:'turno3'},
+  '2026-04-30':{rosa:'turno2',michel:'turno1',wendy:'turno3'},
+  '2026-05-01':{rosa:'turno2',michel:'turno1',wendy:'turno3'},
+  '2026-05-02':{rosa:'turno2',michel:'turno1',wendy:'turno3'},
+  '2026-05-03':{rosa:'libre', michel:'libre', wendy:'solo'},
+  '2026-05-04':{rosa:'turno1',michel:'turno2',wendy:'descanso'},
+  '2026-05-05':{rosa:'turno1',michel:'turno2',wendy:'turno3'},
+  '2026-05-06':{rosa:'turno1',michel:'turno2',wendy:'turno3'},
+  '2026-05-07':{rosa:'turno1',michel:'turno2',wendy:'turno3'},
+  '2026-05-08':{rosa:'turno1',michel:'turno2',wendy:'turno3'},
+  '2026-05-09':{rosa:'turno1',michel:'turno2',wendy:'turno3'},
+  '2026-05-10':{rosa:'solo',  michel:'libre', wendy:'libre'},
+  '2026-05-11':{rosa:'descanso',michel:'turno1',wendy:'turno3'},
+  '2026-05-12':{rosa:'turno2',michel:'turno1',wendy:'turno3'},
+  '2026-05-13':{rosa:'turno2',michel:'turno1',wendy:'turno3'},
+  '2026-05-14':{rosa:'turno2',michel:'turno1',wendy:'turno3'},
+  '2026-05-15':{rosa:'turno2',michel:'turno1',wendy:'turno3'},
+  '2026-05-16':{rosa:'turno2',michel:'turno1',wendy:'turno3'},
+  '2026-05-17':{rosa:'libre', michel:'solo',  wendy:'libre'},
+  '2026-05-18':{rosa:'turno1',michel:'descanso',wendy:'turno3'},
+  '2026-05-19':{rosa:'turno1',michel:'turno2',wendy:'turno3'},
+  '2026-05-20':{rosa:'turno1',michel:'turno2',wendy:'turno3'},
+  '2026-05-21':{rosa:'turno1',michel:'turno2',wendy:'turno3'},
+  '2026-05-22':{rosa:'turno1',michel:'turno2',wendy:'turno3'},
+  '2026-05-23':{rosa:'turno1',michel:'turno2',wendy:'turno3'},
+  '2026-05-24':{rosa:'libre', michel:'libre', wendy:'solo'},
+  '2026-05-25':{rosa:'turno2',michel:'turno1',wendy:'descanso'},
+  '2026-05-26':{rosa:'turno2',michel:'turno1',wendy:'turno3'},
+  '2026-05-27':{rosa:'turno2',michel:'turno1',wendy:'turno3'},
+  '2026-05-28':{rosa:'turno2',michel:'turno1',wendy:'turno3'},
+  '2026-05-29':{rosa:'turno2',michel:'turno1',wendy:'turno3'},
+  '2026-05-30':{rosa:'turno2',michel:'turno1',wendy:'turno3'},
+  '2026-05-31':{rosa:'solo',  michel:'libre', wendy:'libre'},
+};
+const GESTION_P=[
+  'Asignación de trabajo al personal técnico — todas las cuadrillas deben tener asignado 1 cliente ZONIFICADO.',
+  '2.º filtro: llamada/mensajes al cliente para confirmar franjas horarias.',
+  'Ubicación del personal técnico antes de la franja (8am–12pm) · (12pm–4pm) · (4pm–8pm).',
+  'Confirmar con la franja horaria todas las asignaciones dentro de los tiempos estimados (QUANTUM). PROGRAMADO → EN CAMINO (½h) · EN CAMINO → EN PROCESO (1h) · EN PROCESO → FINALIZADO (2h).',
+  'Enviar cortes de trabajo del día (Proceso Interno).',
+];
+const VALID_P=[
+  'Revisión de fotos al 100% (10am – 9pm).',
+  'Seguimiento de los motivos: AUSENTE · CANCELADOS · REPROGRAMADO.',
+  'Apoyo a GESTIÓN.',
+];
 
-async function sbGet(table, qs=''){
-  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}${qs}`, {headers: hdrs});
-  return r.json();
-}
-async function sbPost(table, body){
-  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {method:'POST', headers: hdrs, body: JSON.stringify(body)});
-  return r.json();
-}
-async function sbPatch(table, qs, body){
-  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}${qs}`, {method:'PATCH', headers: hdrs, body: JSON.stringify(body)});
-  return r.json();
-}
-async function sbDelete(table, qs){
-  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}${qs}`, {method:'DELETE', headers: hdrs});
-  return r.ok;
-}
+let overrides=JSON.parse(localStorage.getItem('sched_ov')||'{}');
+let notes=JSON.parse(localStorage.getItem('sched_nt')||'{}');
+let isAdmin=false,weekOffset=0,editCell=null,selSlot='';
+const today=new Date();today.setHours(0,0,0,0);
+const DS=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+const DF=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
 
-// ─── REALTIME ─────────────────────────────────────────────
-function connectRealtime(){
-  // Supabase realtime via WebSocket
-  const wsUrl = SUPABASE_URL.replace('https','wss') + '/realtime/v1/websocket?apikey=' + ANON_KEY + '&vsn=1.0.0';
-  const ws = new WebSocket(wsUrl);
-  ws.onopen = () => {
-    setStatus(true);
-    ws.send(JSON.stringify({topic:'realtime:public:persons', event:'phx_join', payload:{}, ref:'1'}));
-    ws.send(JSON.stringify({topic:'realtime:public:schedule_config', event:'phx_join', payload:{}, ref:'2'}));
-    // Heartbeat
-    setInterval(() => ws.readyState===1 && ws.send(JSON.stringify({topic:'phoenix',event:'heartbeat',payload:{},ref:'hb'})), 25000);
-  };
-  ws.onmessage = (e) => {
-    try{
-      const msg = JSON.parse(e.data);
-      if(msg.event === 'INSERT' || msg.event === 'UPDATE' || msg.event === 'DELETE'){
-        loadData();
-      }
-    }catch{}
-  };
-  ws.onclose = () => { setStatus(false); setTimeout(connectRealtime, 3000); };
-  ws.onerror = () => { setStatus(false); };
-}
+function tds(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function pd(s){const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)}
+function fs(d){return d.getDate()+'/'+(d.getMonth()+1)}
+function ff(d){return d.toLocaleDateString('es',{day:'numeric',month:'short'})}
+function mon(d){const day=d.getDay(),diff=day===0?-6:1-day,m=new Date(d);m.setDate(d.getDate()+diff);m.setHours(0,0,0,0);return m}
+function getSlot(ds,pid){const k=ds+'|'+pid;if(overrides[k])return overrides[k];const r=EXCEL_SCHEDULE[ds];return(r&&r[pid]!==undefined)?r[pid]:'libre'}
+function setSlot(ds,pid,s){overrides[ds+'|'+pid]=s;localStorage.setItem('sched_ov',JSON.stringify(overrides))}
+function getNote(ds,pid){return notes[ds+'|'+pid]||''}
+function setNote(ds,pid,n){const k=ds+'|'+pid;if(n)notes[k]=n;else delete notes[k];localStorage.setItem('sched_nt',JSON.stringify(notes))}
+function weekDays(){const b=mon(today);b.setDate(b.getDate()+weekOffset*7);return Array.from({length:7},(_,i)=>{const d=new Date(b);d.setDate(b.getDate()+i);return d})}
 
-function setStatus(ok){
-  const dot = document.getElementById('statusDot');
-  const lbl = document.getElementById('statusLabel');
-  if(ok){ dot.style.background='#22c55e'; dot.style.boxShadow='0 0 6px #22c55e88'; lbl.textContent='En vivo'; }
-  else  { dot.style.background='#b0b8d0'; dot.style.boxShadow='none'; lbl.textContent='Reconectando...'; }
-}
-
-// ─── DATA LOAD ────────────────────────────────────────────
-async function loadData(){
-  try{
-    const [pRows, cfg] = await Promise.all([
-      sbGet('persons','?order=sort_order.asc'),
-      sbGet('schedule_config','?id=eq.1')
-    ]);
-    if(Array.isArray(pRows)) persons = pRows;
-    if(Array.isArray(cfg) && cfg[0] && cfg[0].ref_monday){
-      const d = new Date(cfg[0].ref_monday);
-      d.setHours(0,0,0,0);
-      refMonday = d;
-    }
-    render();
-    document.getElementById('setupNotice').style.display = persons.length>0 ? 'none' : '';
-  }catch(e){
-    toast('Error al cargar datos','err');
-  }
-}
-
-// ─── PERSON CRUD ──────────────────────────────────────────
-async function addPerson(){
-  if(!isAdmin){showAdminModal();return;}
-  const inp = document.getElementById('nameInput');
-  const name = inp.value.trim();
-  if(!name) return;
-  if(persons.find(p=>p.name.toLowerCase()===name.toLowerCase())){toast('Nombre ya existe','err');return;}
-  const order = persons.length > 0 ? Math.max(...persons.map(p=>p.sort_order)) + 1 : 0;
-  const res = await sbPost('persons', {name, sort_order: order});
-  if(Array.isArray(res) && res[0]){ inp.value=''; toast('Persona agregada','ok'); }
-  else toast('Error al agregar','err');
-}
-
-async function removePerson(id){
-  if(!isAdmin) return;
-  if(!confirm('¿Eliminar esta persona?')) return;
-  await sbDelete('persons', `?id=eq.${id}`);
-  toast('Persona eliminada','ok');
-}
-
-async function saveOrder(){
-  const updates = persons.map((p,i) => sbPatch('persons', `?id=eq.${p.id}`, {sort_order: i}));
-  await Promise.all(updates);
-  toast('Orden guardado','ok');
-}
-
-// ─── DRAG & DROP ──────────────────────────────────────────
-function onDragStart(e, idx){ dragSrcIdx = idx; e.currentTarget.classList.add('dragging'); }
-function onDragEnd(e){ e.currentTarget.classList.remove('dragging'); document.querySelectorAll('.person-item').forEach(el=>el.classList.remove('drag-over')); }
-function onDragOver(e, idx){ e.preventDefault(); document.querySelectorAll('.person-item').forEach(el=>el.classList.remove('drag-over')); if(dragSrcIdx!==idx) e.currentTarget.classList.add('drag-over'); }
-function onDrop(e, idx){
-  e.preventDefault();
-  if(dragSrcIdx===null||dragSrcIdx===idx) return;
-  const arr = [...persons];
-  const [moved] = arr.splice(dragSrcIdx,1);
-  arr.splice(idx,0,moved);
-  persons = arr;
-  dragSrcIdx = null;
-  render();
-  saveOrder();
-}
-
-// ─── SCHEDULE LOGIC ───────────────────────────────────────
-function getMondayOfWeek(date){
-  const d = new Date(date);
-  const day = d.getDay();
-  d.setDate(d.getDate() + (day===0?-6:1-day));
-  d.setHours(0,0,0,0);
-  return d;
-}
-
-function getCurrentMonday(){
-  const base = getMondayOfWeek(today);
-  base.setDate(base.getDate() + weekOffset*7);
-  return base;
-}
-
-function getWeekIndex(monday){
-  return Math.round((monday - refMonday) / (7*24*3600*1000));
-}
-
-function getWeekData(monday){
-  if(!persons.length) return {days:[],assignerIdx:-1,guardiaIdx:-1};
-  const n = persons.length;
-  const wi = getWeekIndex(monday);
-  const ai = ((wi % n) + n) % n;
-  const gi = (ai + 1) % n;
-  const days = [];
-  for(let i=0;i<7;i++){
-    const d = new Date(monday);
-    d.setDate(d.getDate()+i);
-    const isDom = i===6;
-    const slots = persons.map((_,pi)=>{
-      if(isDom) return pi===ai?'libre':pi===gi?'guardia':'libre';
-      return pi===ai?'asigna':'libre';
-    });
-    days.push({date:d, slots});
-  }
-  return {days, assignerIdx:ai, guardiaIdx:gi};
-}
-
-function formatDate(d){ return d.toLocaleDateString('es-ES',{day:'2-digit',month:'short'}); }
-function formatFull(d){ return d.toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}); }
-
-// ─── RENDER ───────────────────────────────────────────────
-function render(){
-  renderAdminUI();
-  renderViewChips();
-  renderPersonsList();
-  renderLegend();
-  const monday = getCurrentMonday();
-  const sunday = new Date(monday); sunday.setDate(sunday.getDate()+6);
-  document.getElementById('weekLabel').textContent = formatDate(monday)+' – '+formatDate(sunday);
-  renderGrid(monday);
-  renderInfo(monday);
-  renderRotTable(monday);
-}
-
-function renderAdminUI(){
-  document.getElementById('editPanel').style.display = isAdmin?'':'none';
-  document.getElementById('viewPanel').style.display = isAdmin?'none':'';
-  document.getElementById('adminStatus').textContent = isAdmin?'Modo edición activo':'Modo solo lectura';
-  document.getElementById('lockIcon').textContent = isAdmin?'🔓':'🔒';
-  document.getElementById('logoutBtn').style.display = isAdmin?'':'none';
-}
-
-function renderViewChips(){
-  const el = document.getElementById('viewChips');
-  el.innerHTML = '';
-  if(!persons.length){ el.innerHTML='<span style="font-size:12px;color:var(--text3);font-style:italic">Sin personas aún</span>'; return; }
-  persons.forEach((p,i)=>{
-    const chip = document.createElement('div');
-    chip.className = 'mini-badge ' + PALETTE[i%PALETTE.length];
-    chip.style.cssText = 'padding:6px 12px;font-size:12px;border-radius:100px;font-weight:500';
-    chip.textContent = (i+1)+'. '+p.name;
-    el.appendChild(chip);
-  });
-}
-
-function renderPersonsList(){
-  const el = document.getElementById('personsList');
-  el.innerHTML = '';
-  if(!persons.length){ el.innerHTML='<div class="empty-state">Agrega personas para comenzar</div>'; return; }
-  persons.forEach((p,i)=>{
-    const item = document.createElement('div');
-    item.className = 'person-item';
-    item.draggable = true;
-    item.dataset.idx = i;
-    item.addEventListener('dragstart', e=>onDragStart(e,i));
-    item.addEventListener('dragend',   e=>onDragEnd(e));
-    item.addEventListener('dragover',  e=>onDragOver(e,i));
-    item.addEventListener('drop',      e=>onDrop(e,i));
-    const pal = PALETTE[i%PALETTE.length];
-    const col = PAL_COLORS[i%PAL_COLORS.length];
-    item.innerHTML = `
-      <div class="drag-handle">☰</div>
-      <div class="person-badge ${pal}">${p.name.charAt(0).toUpperCase()}</div>
-      <span class="person-name">${p.name}</span>
-      <span class="person-order">#${i+1}</span>
-      <div class="person-actions">
-        <button class="btn btn-sm btn-danger" onclick="removePerson('${p.id}')">✕</button>
-      </div>`;
-    el.appendChild(item);
-  });
-}
-
-function renderLegend(){
-  const el = document.getElementById('legendEl');
-  el.innerHTML = '';
-  persons.forEach((p,i)=>{
-    const div = document.createElement('div'); div.className='legend-item';
-    div.innerHTML=`<div class="ldot" style="background:${PAL_COLORS[i%PAL_COLORS.length]}"></div>${p.name} asigna`;
-    el.appendChild(div);
-  });
-  el.innerHTML += `<div class="legend-item"><div class="ldot" style="background:var(--red)"></div>Guardia dom.</div>
-                   <div class="legend-item"><div class="ldot" style="background:var(--text3)"></div>Libre</div>`;
-}
-
-function renderGrid(monday){
-  const {days, assignerIdx, guardiaIdx} = getWeekData(monday);
-  const grid = document.getElementById('calGrid');
-  grid.innerHTML = '';
-  const cols = 1 + 7;
-  grid.style.gridTemplateColumns = '80px repeat(7, 1fr)';
-
-  // corner
-  const corner = document.createElement('div'); corner.className='cell cell-hd'; grid.appendChild(corner);
-  // headers
+/* ── RENDER DESKTOP GRID ── */
+function renderGrid(){
+  const days=weekDays();
+  document.getElementById('weekLabel').textContent=ff(days[0])+' – '+ff(days[6])+' '+days[6].getFullYear();
+  const g=document.getElementById('calGrid');
+  g.innerHTML='';g.style.gridTemplateColumns='108px repeat(7,1fr)';
+  g.appendChild(document.createElement('div'));
   days.forEach((d,i)=>{
-    const isToday = d.date.getTime()===today.getTime();
-    const hd = document.createElement('div');
-    hd.className='cell cell-hd'+(isToday?' is-today':'');
-    hd.innerHTML=`<span class="day-name">${DAYS_SHORT[i]}</span><span class="day-date">${formatDate(d.date)}</span>`;
-    grid.appendChild(hd);
+    const isT=d.getTime()===today.getTime();
+    const hd=document.createElement('div');
+    hd.className='cell-hd'+(isT?' is-today':'');
+    hd.innerHTML=`<span class="day-name">${DS[i]}</span><span class="day-date">${fs(d)}</span>`;
+    g.appendChild(hd);
   });
-  // rows
-  persons.forEach((p,pi)=>{
-    const lbl = document.createElement('div'); lbl.className='cell cell-person';
-    lbl.innerHTML=`<span class="cell-person-name">${p.name}</span>`; grid.appendChild(lbl);
+  persons.forEach(p=>{
+    const lbl=document.createElement('div');lbl.className='cell-person-col';
+    lbl.innerHTML=`<div class="p-av" style="background:${p.hex}20;border-color:${p.hex};color:${p.hex}">${p.name[0]}</div><div class="p-name">${p.name}</div><div class="p-sub">${p.cargo}</div>`;
+    g.appendChild(lbl);
     days.forEach(d=>{
-      const val = d.slots[pi];
-      const isToday = d.date.getTime()===today.getTime();
-      const cell = document.createElement('div');
-      let cls='cell ';
-      let badge='';
-      if(val==='asigna'){cls+='cell-'+PALETTE[pi%PALETTE.length];badge='Asignando';}
-      else if(val==='guardia'){cls+='cell-guardia';badge='Guardia';}
-      else{cls+='cell-libre';badge='Libre';}
-      if(isToday) cls+=' is-today';
-      cell.className=cls;
-      cell.innerHTML=`<span class="badge">${badge}</span>`;
-      grid.appendChild(cell);
+      const ds=tds(d),slot=getSlot(ds,p.id),note=getNote(ds,p.id);
+      const m=SLOT_META[slot]||SLOT_META.libre,isT=d.getTime()===today.getTime();
+      const c=document.createElement('div');
+      c.className=`shift-cell ${m.cls}${isAdmin?' editable':''}${isT?' is-today':''}`;
+      c.innerHTML=`<span class="s-label">${m.label}</span>${m.time?`<span class="s-time">${m.time}</span>`:''}${note?`<span class="s-note">📝</span>`:''}`;
+      if(isAdmin)c.addEventListener('click',()=>openCell(ds,p));
+      g.appendChild(c);
     });
   });
-
-  document.getElementById('rotCard').style.display = persons.length?'':'none';
 }
 
-function renderInfo(monday){
-  const sunday = new Date(monday); sunday.setDate(sunday.getDate()+6);
-  const {assignerIdx, guardiaIdx} = getWeekData(monday);
-  const el = document.getElementById('infoText');
-  if(!persons.length){el.innerHTML='Agrega personas para comenzar.';return;}
-  const asigna = persons[assignerIdx].name;
-  const guardia = persons[guardiaIdx].name;
-  let wl = weekOffset===0?'Esta semana':weekOffset>0?`En ${weekOffset} semana${weekOffset>1?'s':''}`:`Hace ${Math.abs(weekOffset)} semana${Math.abs(weekOffset)>1?'s':''}`;
-  el.innerHTML=`<strong>${wl} (${formatFull(monday)} – ${formatFull(sunday)}):</strong> <strong>${asigna}</strong> asigna lunes–sábado y descansa el domingo. <strong>${guardia}</strong> hace guardia el domingo.`;
+/* ── RENDER MOBILE ── */
+function renderMobile(){
+  const days=weekDays();
+  const mc=document.getElementById('mobileCal');mc.innerHTML='';
+  days.forEach((d,i)=>{
+    const isT=d.getTime()===today.getTime(),ds=tds(d);
+    const wrap=document.createElement('div');wrap.className='mob-day';
+    const hd=document.createElement('div');hd.className='mob-day-hd'+(isT?' mob-day-today':'');
+    hd.innerHTML=`<span class="mob-day-name">${DF[i]}</span><span class="mob-day-date">${fs(d)}</span>`;
+    wrap.appendChild(hd);
+    const rows=document.createElement('div');rows.className='mob-rows';
+    persons.forEach(p=>{
+      const slot=getSlot(ds,p.id),m=SLOT_META[slot]||SLOT_META.libre;
+      const row=document.createElement('div');row.className='mob-row'+(isAdmin?' editable':'');
+      row.innerHTML=`<div class="mob-av" style="background:${p.hex}20;border-color:${p.hex};color:${p.hex}">${p.name[0]}</div><span class="mob-nm">${p.name}</span><div class="mob-badge-wrap"><span class="mob-lbl ${m.cls}">${m.label}</span>${m.time?`<span class="mob-time">${m.time}</span>`:''}</div>`;
+      if(isAdmin)row.addEventListener('click',()=>openCell(ds,p));
+      rows.appendChild(row);
+    });
+    wrap.appendChild(rows);mc.appendChild(wrap);
+  });
 }
 
-function renderRotTable(monday){
-  const card = document.getElementById('rotCard');
-  const table = document.getElementById('rotTable');
-  if(!persons.length){card.style.display='none';return;}
-  card.style.display='';
-  const n = persons.length;
-  let html=`<tr><th>#</th><th>Semana</th><th>Asigna</th><th>Guardia domingo</th><th></th></tr>`;
-  for(let off=-1; off<=n+2; off++){
-    const m = new Date(monday); m.setDate(m.getDate()+off*7);
-    const sun = new Date(m); sun.setDate(sun.getDate()+6);
-    const wi = getWeekIndex(m);
-    const ai = ((wi%n)+n)%n;
-    const gi = (ai+1)%n;
-    const isCurr = off===0;
-    const tag = isCurr
-      ? `<span class="mini-badge" style="background:var(--accent);color:#fff;border-color:transparent">En curso</span>`
-      : off<0
-      ? `<span class="mini-badge cell-libre">Pasada</span>`
-      : `<span class="mini-badge cell-libre">Próxima</span>`;
-    html+=`<tr${isCurr?' class="curr"':''}>
-      <td style="color:var(--text3);font-family:'DM Mono',monospace">${wi}</td>
-      <td style="font-size:11px;font-family:'DM Mono',monospace">${formatDate(m)} – ${formatDate(sun)}</td>
-      <td><span class="mini-badge ${PALETTE[ai%PALETTE.length]}" style="border-radius:100px">${persons[ai].name}</span></td>
-      <td><span class="mini-badge cell-guardia" style="border-radius:100px">${persons[gi].name}</span></td>
-      <td>${tag}</td></tr>`;
-  }
-  table.innerHTML=html;
+/* ── RENDER SUMMARY ── */
+function renderSummary(){
+  const days=weekDays(),t=document.getElementById('sumTable');
+  let h=`<thead><tr><th>Persona</th>${days.map((d,i)=>`<th>${DS[i]}<br><span style="font-weight:500;color:var(--tx3)">${fs(d)}</span></th>`).join('')}<th style="color:var(--t1)">Trab.</th><th style="color:var(--des)">Desc.</th></tr></thead><tbody>`;
+  persons.forEach(p=>{
+    let w=0,r=0;
+    const cells=days.map(d=>{
+      const ds=tds(d),slot=getSlot(ds,p.id),m=SLOT_META[slot]||SLOT_META.libre;
+      if(slot==='descanso')r++;else if(slot!=='libre')w++;
+      return `<td><span class="mini-b ${m.cls}">${m.label}${m.time?`<span class="mini-b-time">${m.time}</span>`:''}</span></td>`;
+    }).join('');
+    h+=`<tr><td><strong style="font-size:14px">${p.name}</strong><br><span style="font-size:11px;color:var(--tx3)">${p.cargo}</span></td>${cells}<td style="text-align:center"><span class="stat-n" style="color:var(--t1)">${w}</span></td><td style="text-align:center"><span class="stat-n" style="color:var(--des)">${r}</span></td></tr>`;
+  });
+  t.innerHTML=h+'</tbody>';
 }
 
-// ─── NAVIGATION ───────────────────────────────────────────
-function changeWeek(dir){ weekOffset+=dir; render(); }
-function goToday(){ weekOffset=0; render(); }
-
-// ─── ADMIN AUTH ───────────────────────────────────────────
-function showAdminModal(){
-  document.getElementById('adminModal').style.display='flex';
-  document.getElementById('pwdInput').value='';
-  document.getElementById('pwdError').textContent='';
-  setTimeout(()=>document.getElementById('pwdInput').focus(),100);
+/* ── RENDER TEAM ── */
+function renderTeam(){
+  const g=document.getElementById('teamGrid');g.innerHTML='';
+  persons.forEach(p=>{
+    let w=0,r=0;
+    Object.keys(EXCEL_SCHEDULE).forEach(ds=>{const s=getSlot(ds,p.id);if(s==='descanso')r++;else if(s!=='libre')w++});
+    const card=document.createElement('div');card.className='team-card';card.style.setProperty('--pc',p.hex);
+    card.innerHTML=`<div class="team-hd"><div class="team-av" style="background:${p.hex}20;border-color:${p.hex};color:${p.hex}">${p.name[0]}</div><div><div class="team-name">${p.name}</div><div class="team-role">${p.cargo}</div></div></div>
+    <div class="team-details">
+      <div class="team-row"><div class="team-row-ico">🔄</div><span>${p.turnoTipo}</span></div>
+      <div class="team-row"><div class="team-row-ico">🕐</div><span class="team-row-val">${p.horario}</span></div>
+    </div>
+    <div class="team-stats">
+      <div class="team-stat"><div class="team-stat-num" style="color:var(--t1)">${w}</div><div class="team-stat-lbl">Días trab.</div></div>
+      <div class="team-stat"><div class="team-stat-num" style="color:var(--des)">${r}</div><div class="team-stat-lbl">Descansos</div></div>
+    </div>
+    ${isAdmin?`<div style="display:flex;gap:8px;margin-top:14px"><button class="btn btn-sm" style="flex:1" onclick="editPerson('${p.id}')">✏️ Editar</button><button class="btn btn-sm btn-danger" onclick="delPerson('${p.id}')">✕</button></div>`:''}`;
+    g.appendChild(card);
+  });
 }
-function closeAdminModal(){ document.getElementById('adminModal').style.display='none'; }
+
+/* ── RENDER PROCESSES ── */
+function renderProcesses(){
+  document.getElementById('gestionList').innerHTML=GESTION_P.map((t,i)=>`<div class="proc-item"><div class="proc-num">${i+1}</div><span>${t}</span></div>`).join('');
+  document.getElementById('validList').innerHTML=VALID_P.map((t,i)=>`<div class="proc-item"><div class="proc-num">${i+1}</div><span>${t}</span></div>`).join('');
+}
+
+/* ── CELL MODAL ── */
+function openCell(ds,person){
+  editCell={dateStr:ds,personId:person.id};
+  const d=pd(ds),dow=d.getDay();
+  document.getElementById('cellModalTitle').textContent=person.name;
+  document.getElementById('cellModalSub').textContent=`${DF[dow===0?6:dow-1]}, ${d.getDate()} · ${person.cargo}`;
+  selSlot=getSlot(ds,person.id);
+  document.getElementById('cellNote').value=getNote(ds,person.id);
+  document.getElementById('customTime').value='';
+  renderSlotOpts();
+  document.getElementById('cellModal').style.display='flex';
+}
+function renderSlotOpts(){
+  const wrap=document.getElementById('slotOptions');
+  const slots=['turno1','turno2','turno3','solo','descanso','libre','custom'];
+  wrap.innerHTML=slots.map(s=>{
+    const m=SLOT_META[s],isSel=selSlot===s;
+    return `<div class="slot-opt ${m.cls}${isSel?' sel':''}" onclick="pickSlot('${s}')" style="${isSel?'border-color:currentColor':''}">
+      <span class="slot-opt-label">${m.label}</span>
+      ${m.time?`<span class="slot-opt-time">${m.time}</span>`:''}
+    </div>`;
+  }).join('');
+  document.getElementById('customTimeGroup').style.display=selSlot==='custom'?'':'none';
+}
+function pickSlot(s){selSlot=s;renderSlotOpts()}
+function saveCellEdit(){
+  if(!editCell)return;
+  const note=document.getElementById('cellNote').value.trim();
+  const ct=document.getElementById('customTime').value.trim();
+  setSlot(editCell.dateStr,editCell.personId,selSlot);
+  setNote(editCell.dateStr,editCell.personId,selSlot==='custom'&&ct?ct:note);
+  closeModal('cellModal');renderAll();toast('Turno actualizado ✓','ok');
+}
+
+/* ── ADMIN ── */
+function showAdminModal(){document.getElementById('adminModal').style.display='flex';document.getElementById('pwdInput').value='';document.getElementById('pwdError').textContent='';setTimeout(()=>document.getElementById('pwdInput').focus(),150)}
 function checkPassword(){
-  const pwd = document.getElementById('pwdInput').value;
-  if(pwd===ADMIN_PASS){
-    isAdmin=true; closeAdminModal(); render(); toast('Acceso concedido ✓','ok');
-  } else {
-    document.getElementById('pwdError').textContent='Contraseña incorrecta';
-    document.getElementById('pwdInput').value='';
-    document.getElementById('pwdInput').focus();
-  }
+  if(document.getElementById('pwdInput').value===ADMIN_PASS){isAdmin=true;closeModal('adminModal');applyAdmin();toast('Acceso concedido ✓','ok')}
+  else{document.getElementById('pwdError').textContent='Contraseña incorrecta';document.getElementById('pwdInput').value='';document.getElementById('pwdInput').focus()}
 }
-function logout(){ isAdmin=false; render(); toast('Sesión cerrada','ok'); }
-
-// ─── TOAST ────────────────────────────────────────────────
-let toastTimer;
-function toast(msg, type='ok'){
-  const el = document.getElementById('toast');
-  clearTimeout(toastTimer);
-  el.textContent=msg; el.className='toast show '+(type==='ok'?'ok':'err');
-  toastTimer=setTimeout(()=>el.className='toast',2800);
+function logout(){isAdmin=false;applyAdmin();toast('Sesión cerrada','ok')}
+function applyAdmin(){
+  document.getElementById('adminStatus').textContent=isAdmin?'Modo edición activo':'Modo solo lectura';
+  document.getElementById('lockIcon').textContent=isAdmin?'🔓':'🔒';
+  document.getElementById('adminBtn').style.display=isAdmin?'none':'';
+  document.getElementById('logoutBtn').style.display=isAdmin?'':'none';
+  document.getElementById('editHint').style.display=isAdmin?'flex':'none';
+  document.getElementById('addPersonCard').style.display=isAdmin?'':'none';
+  renderAll();renderTeam();
 }
 
-// ─── ADD input Enter ─────────────────────────────────────
-document.getElementById('nameInput').addEventListener('keydown',e=>{ if(e.key==='Enter') addPerson(); });
+/* ── PERSONS ── */
+const HEXES=['#22c55e','#a78bfa','#fbbf24','#38bdf8','#f87171','#fb923c'];
+function addPerson(){
+  const name=document.getElementById('newName').value.trim().toUpperCase();
+  const cargo=document.getElementById('newCargo').value.trim();
+  const turnoTipo=document.getElementById('newTurnoTipo').value==='fijo'?'Turno Fijo':'Turno de Rotación';
+  const horario=document.getElementById('newHorario').value.trim();
+  if(!name){toast('Escribe un nombre','err');return}
+  const hex=HEXES[persons.length%HEXES.length];
+  persons.push({id:name.toLowerCase()+'_'+Date.now(),name,cargo:cargo||'GESTOR',turnoTipo,horario:horario||'—',hex});
+  ['newName','newCargo','newHorario'].forEach(id=>document.getElementById(id).value='');
+  renderAll();renderTeam();toast(name+' agregado ✓','ok');
+}
+function delPerson(id){if(!confirm('¿Eliminar?'))return;persons=persons.filter(p=>p.id!==id);renderAll();renderTeam();toast('Eliminado','ok')}
+function editPerson(id){
+  const p=persons.find(x=>x.id===id);if(!p)return;
+  const name=prompt('Nombre:',p.name);if(name===null)return;
+  p.name=name.toUpperCase().trim();
+  p.cargo=(prompt('Cargo:',p.cargo)||p.cargo).trim();
+  p.horario=(prompt('Horario:',p.horario)||p.horario).trim();
+  renderAll();renderTeam();toast('Actualizado ✓','ok');
+}
 
-// ─── CLOSE MODAL ON OVERLAY CLICK ────────────────────────
-document.getElementById('adminModal').addEventListener('click',e=>{ if(e.target===e.currentTarget) closeAdminModal(); });
+/* ── TABS ── */
+function switchTab(tab){
+  ['horario','equipo','procesos'].forEach(t=>{
+    document.getElementById('view-'+t).style.display=t===tab?'':'none';
+    document.getElementById('tab-'+t).classList.toggle('active',t===tab);
+  });
+  if(tab==='equipo')renderTeam();
+  if(tab==='procesos')renderProcesses();
+}
 
-// ─── INIT ─────────────────────────────────────────────────
-loadData().then(()=>{ connectRealtime(); });
+/* ── NAV ── */
+function changeWeek(d){weekOffset+=d;renderAll()}
+function goToday(){weekOffset=0;renderAll()}
+function jumpToExcelStart(){
+  const t=new Date(2026,3,24);
+  weekOffset=Math.round((mon(t)-mon(today))/(7*86400000));
+  renderAll();toast('24 abr →','ok');
+}
+
+/* ── RENDER ALL ── */
+function renderAll(){renderGrid();renderMobile();renderSummary()}
+
+/* ── MODAL HELPER ── */
+function closeModal(id){document.getElementById(id).style.display='none'}
+['adminModal','cellModal'].forEach(id=>document.getElementById(id).addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal(id)}));
+
+/* ── TOAST ── */
+let _tt;
+function toast(msg,type='ok'){const el=document.getElementById('toast');clearTimeout(_tt);el.textContent=msg;el.className='toast show '+type;_tt=setTimeout(()=>el.className='toast',2800)}
+
+/* ── INIT ── */
+renderAll();renderProcesses();
 </script>
 </body>
 </html>
