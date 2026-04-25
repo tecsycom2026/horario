@@ -4,20 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gestión · Horarios</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕐</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0f1117;--surface:#181c27;--surface2:#1f2436;--surface3:#272d40;
-  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
-  --tx:#f0f2f8;--tx2:#8b93b0;--tx3:#4e566e;
-  --blue:#4f8ef7;--blue2:#3570d4;--blue-g:rgba(79,142,247,0.22);
-  --t1:#22c55e;--t1-bg:rgba(34,197,94,0.12);--t1-bd:rgba(34,197,94,0.28);
-  --t2:#a78bfa;--t2-bg:rgba(167,139,250,0.12);--t2-bd:rgba(167,139,250,0.28);
-  --t3:#fbbf24;--t3-bg:rgba(251,191,36,0.12);--t3-bd:rgba(251,191,36,0.28);
-  --grd:#38bdf8;--grd-bg:rgba(56,189,248,0.12);--grd-bd:rgba(56,189,248,0.28);
-  --des:#f87171;--des-bg:rgba(248,113,113,0.12);--des-bd:rgba(248,113,113,0.28);
-  --lib:#4e566e;--lib-bg:rgba(78,86,110,0.08);--lib-bd:rgba(78,86,110,0.18);
+  --bg:#f0f4f9;--surface:#ffffff;--surface2:#f5f7fb;--surface3:#e8ecf4;
+  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.14);
+  --tx:#1a2035;--tx2:#5a6282;--tx3:#9ba3be;
+  --blue:#3b6ef0;--blue2:#2554d0;--blue-g:rgba(59,110,240,0.15);
+  --t1:#16a34a;--t1-bg:rgba(22,163,74,0.10);--t1-bd:rgba(22,163,74,0.30);
+  --t2:#7c3aed;--t2-bg:rgba(124,58,237,0.10);--t2-bd:rgba(124,58,237,0.28);
+  --t3:#b45309;--t3-bg:rgba(251,191,36,0.15);--t3-bd:rgba(180,83,9,0.30);
+  --grd:#0284c7;--grd-bg:rgba(2,132,199,0.10);--grd-bd:rgba(2,132,199,0.28);
+  --des:#dc2626;--des-bg:rgba(220,38,38,0.08);--des-bd:rgba(220,38,38,0.25);
+  --lib:#6b7280;--lib-bg:rgba(107,114,128,0.07);--lib-bd:rgba(107,114,128,0.20);
   --r:10px;--r-lg:14px;--r-xl:20px;
 }
 html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
@@ -77,7 +78,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-hei
 .tabs{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:4px;margin-bottom:16px}
 .tab{flex:1;height:36px;border:none;background:transparent;font-size:13px;font-family:'Inter',sans-serif;font-weight:600;color:var(--tx3);border-radius:10px;cursor:pointer;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:6px}
 .tab:hover{color:var(--tx2);background:var(--surface2)}
-.tab.active{background:var(--surface2);color:var(--tx);box-shadow:0 1px 8px rgba(0,0,0,.35)}
+.tab.active{background:var(--surface);color:var(--tx);box-shadow:0 1px 6px rgba(0,0,0,.12)}
 
 /* WEEK NAV */
 .week-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
@@ -109,7 +110,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-hei
 .shift-cell{border-radius:10px;padding:10px 5px;min-height:94px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1px solid;text-align:center;cursor:default;transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden}
 .shift-cell::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:currentColor;opacity:0.45}
 .shift-cell.editable{cursor:pointer}
-.shift-cell.editable:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.45)}
+.shift-cell.editable:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.15)}
 .shift-cell.is-today{box-shadow:inset 0 0 0 2px var(--blue)}
 .s-label{font-size:15px;font-weight:800;letter-spacing:.02em}
 .s-time{font-size:11px;font-weight:500;font-family:'JetBrains Mono',monospace;opacity:.82;margin-top:1px}
@@ -175,7 +176,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-hei
 .proc-num{min-width:24px;height:24px;border-radius:6px;background:var(--surface3);border:1px solid var(--border2);font-size:11px;font-weight:800;color:var(--tx3);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;flex-shrink:0;margin-top:2px}
 
 /* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px}
 .modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r-xl);padding:26px;max-width:420px;width:100%;animation:popIn .22s cubic-bezier(.34,1.5,.64,1);max-height:92vh;overflow-y:auto}
 @keyframes popIn{from{transform:scale(.88) translateY(16px);opacity:0}to{transform:scale(1);opacity:1}}
 .modal-ico{font-size:30px;margin-bottom:12px;display:block}
@@ -193,12 +194,28 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-hei
 .slot-opt-time{font-size:10px;font-family:'JetBrains Mono',monospace;opacity:.7}
 
 /* TOAST */
-.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);padding:10px 20px;font-size:13px;font-weight:700;z-index:300;opacity:0;transition:all .26s cubic-bezier(.34,1.4,.64,1);pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);padding:10px 20px;font-size:13px;font-weight:700;z-index:300;opacity:0;transition:all .26s cubic-bezier(.34,1.4,.64,1);pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.15)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.ok{color:var(--t1);border-color:var(--t1-bd)}
 .toast.err{color:var(--des);border-color:var(--des-bd)}
 
-/* RESPONSIVE */
+/* REORDER */
+.drag-handle{cursor:grab;color:var(--tx3);font-size:14px;padding:2px 4px;user-select:none;flex-shrink:0}
+.drag-handle:active{cursor:grabbing}
+.cell-person-col.dragging{opacity:0.4}
+.person-row-admin{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);cursor:grab;margin-bottom:4px;transition:box-shadow .14s,background .14s}
+.person-row-admin:active{cursor:grabbing}
+.person-row-admin.drag-over{border-color:var(--blue);background:var(--blue-g)}
+.person-row-admin .pr-name{flex:1;font-size:14px;font-weight:700;color:var(--tx)}
+.person-row-admin .pr-cargo{font-size:11px;color:var(--tx3)}
+.order-card{display:none}
+
+/* EDITABLE SHIFT LABELS */
+.slot-edit-btn{font-size:11px;padding:2px 8px;height:24px;border-radius:6px;cursor:pointer;background:var(--blue-g);border:1px solid var(--blue);color:var(--blue);font-weight:700;display:inline-flex;align-items:center;gap:4px}
+.shift-labels-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:4px}
+.shift-label-item{background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:6px}
+.shift-label-item label{font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.07em}
+
 @media(max-width:700px){
   .main{padding:12px}
   .card{padding:14px}
@@ -259,6 +276,41 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-hei
 
   <!-- TAB HORARIO -->
   <div id="view-horario">
+    <div class="card" id="adminToolsCard" style="display:none">
+      <div class="card-hd">
+        <div class="card-title"><div class="card-icon">⚙️</div>Herramientas de edición</div>
+      </div>
+      <!-- SHIFT LABELS EDITOR -->
+      <div style="margin-bottom:14px">
+        <div class="form-label" style="margin-bottom:8px">✏️ Editar etiquetas y horarios de turnos</div>
+        <div class="shift-labels-grid">
+          <div class="shift-label-item">
+            <label>T1 — Etiqueta</label>
+            <input class="input" id="editT1Label" value="T1" style="height:32px;font-size:13px"/>
+            <label>T1 — Horario</label>
+            <input class="input" id="editT1Time" value="5:30–13:30" style="height:32px;font-size:13px"/>
+          </div>
+          <div class="shift-label-item">
+            <label>T2 — Etiqueta</label>
+            <input class="input" id="editT2Label" value="T2" style="height:32px;font-size:13px"/>
+            <label>T2 — Horario</label>
+            <input class="input" id="editT2Time" value="14:00–Cierre" style="height:32px;font-size:13px"/>
+          </div>
+          <div class="shift-label-item">
+            <label>T3 — Etiqueta</label>
+            <input class="input" id="editT3Label" value="T3" style="height:32px;font-size:13px"/>
+            <label>T3 — Horario</label>
+            <input class="input" id="editT3Time" value="10:00–18:00" style="height:32px;font-size:13px"/>
+          </div>
+        </div>
+        <button class="btn btn-sm btn-primary" onclick="applyShiftLabels()" style="margin-top:8px">✓ Aplicar cambios</button>
+      </div>
+      <!-- ORDER EDITOR -->
+      <div>
+        <div class="form-label" style="margin-bottom:8px">↕️ Reordenar integrantes</div>
+        <div id="orderList"></div>
+      </div>
+    </div>
     <div class="card">
       <div class="week-bar">
         <div class="week-nav">
@@ -369,12 +421,9 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-hei
 
 <script>
 const ADMIN_PASS='admin1234';
-let persons=[
-  {id:'rosa',  name:'ROSA',  cargo:'Encargada de Gestión',turnoTipo:'Turno de Rotación',horario:'5:30 – 13:30',  hex:'#22c55e'},
-  {id:'michel',name:'MICHEL',cargo:'Gestor 1',            turnoTipo:'Turno de Rotación',horario:'14:00 – Cierre',hex:'#a78bfa'},
-  {id:'wendy', name:'WENDY', cargo:'Gestor 2',            turnoTipo:'Turno Fijo',       horario:'10:00 – 18:00', hex:'#fbbf24'},
-];
-const SLOT_META={
+
+/* ── SLOT META (mutable for label editing) ── */
+let SLOT_META={
   turno1:  {label:'T1',      time:'5:30–13:30',  cls:'slot-turno1',  color:'var(--t1)'},
   turno2:  {label:'T2',      time:'14:00–Cierre',cls:'slot-turno2',  color:'var(--t2)'},
   turno3:  {label:'T3',      time:'10:00–18:00', cls:'slot-turno3',  color:'var(--t3)'},
@@ -383,6 +432,59 @@ const SLOT_META={
   libre:   {label:'Libre',   time:'',            cls:'slot-libre',   color:'var(--lib)'},
   custom:  {label:'Custom',  time:'',            cls:'slot-guardia', color:'var(--grd)'},
 };
+
+function applyShiftLabels(){
+  SLOT_META.turno1.label = document.getElementById('editT1Label').value.trim() || 'T1';
+  SLOT_META.turno1.time  = document.getElementById('editT1Time').value.trim();
+  SLOT_META.turno2.label = document.getElementById('editT2Label').value.trim() || 'T2';
+  SLOT_META.turno2.time  = document.getElementById('editT2Time').value.trim();
+  SLOT_META.turno3.label = document.getElementById('editT3Label').value.trim() || 'T3';
+  SLOT_META.turno3.time  = document.getElementById('editT3Time').value.trim();
+  // Update legend
+  document.querySelector('.legend').innerHTML=`
+    <div class="legend-item"><div class="ldot" style="background:var(--t1)"></div>${SLOT_META.turno1.label} · ${SLOT_META.turno1.time}</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--t2)"></div>${SLOT_META.turno2.label} · ${SLOT_META.turno2.time}</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--t3)"></div>${SLOT_META.turno3.label} · ${SLOT_META.turno3.time}</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--grd)"></div>Guardia</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--des)"></div>Descanso</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--lib)"></div>Libre</div>`;
+  renderAll();toast('Turnos actualizados ✓','ok');
+}
+
+/* ── ORDER LIST ── */
+let dragSrc=null;
+function renderOrderList(){
+  const ol=document.getElementById('orderList');
+  if(!ol)return;
+  ol.innerHTML='';
+  persons.forEach((p,i)=>{
+    const row=document.createElement('div');
+    row.className='person-row-admin';
+    row.draggable=true;
+    row.dataset.idx=i;
+    row.innerHTML=`<span style="font-size:18px">⠿</span><div class="mob-av" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;border:2px solid;background:${p.hex}20;border-color:${p.hex};color:${p.hex};flex-shrink:0">${p.name[0]}</div><div style="flex:1"><div class="pr-name">${p.name}</div><div class="pr-cargo">${p.cargo}</div></div><span style="font-size:12px;color:var(--tx3)">#${i+1}</span>`;
+    row.addEventListener('dragstart',e=>{dragSrc=i;e.dataTransfer.effectAllowed='move';row.style.opacity='.4'});
+    row.addEventListener('dragend',e=>{row.style.opacity='';document.querySelectorAll('.person-row-admin').forEach(r=>r.classList.remove('drag-over'))});
+    row.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='move';row.classList.add('drag-over')});
+    row.addEventListener('dragleave',()=>row.classList.remove('drag-over'));
+    row.addEventListener('drop',e=>{
+      e.preventDefault();row.classList.remove('drag-over');
+      const to=parseInt(row.dataset.idx);
+      if(dragSrc===null||dragSrc===to)return;
+      const moved=persons.splice(dragSrc,1)[0];
+      persons.splice(to,0,moved);
+      renderOrderList();renderAll();renderTeam();
+      toast('Orden actualizado ✓','ok');
+    });
+    ol.appendChild(row);
+  });
+}
+
+let persons=[
+  {id:'rosa',  name:'ROSA',  cargo:'Encargada de Gestión',turnoTipo:'Turno de Rotación',horario:'5:30 – 13:30',  hex:'#22c55e'},
+  {id:'michel',name:'MICHEL',cargo:'Gestor 1',            turnoTipo:'Turno de Rotación',horario:'14:00 – Cierre',hex:'#a78bfa'},
+  {id:'wendy', name:'WENDY', cargo:'Gestor 2',            turnoTipo:'Turno Fijo',       horario:'10:00 – 18:00', hex:'#fbbf24'},
+];
 const EXCEL_SCHEDULE={
   '2026-04-24':{rosa:'turno2',michel:'turno2',wendy:'turno3'},
   '2026-04-25':{rosa:'turno3',michel:'turno1',wendy:'turno3'},
@@ -597,6 +699,8 @@ function applyAdmin(){
   document.getElementById('logoutBtn').style.display=isAdmin?'':'none';
   document.getElementById('editHint').style.display=isAdmin?'flex':'none';
   document.getElementById('addPersonCard').style.display=isAdmin?'':'none';
+  document.getElementById('adminToolsCard').style.display=isAdmin?'':'none';
+  if(isAdmin)renderOrderList();
   renderAll();renderTeam();
 }
 
